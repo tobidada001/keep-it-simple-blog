@@ -1,8 +1,11 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
+from .models import Categories, Tags, Post
 
 def index(request):
-
-    return render(request, 'blog/index.html')
+    posts = Post.objects.all()
+    user = User.objects.all()
+    return render(request, 'blog/index.html', {'posts': posts, 'user': user})
 # Create your views here.
 
 def archives(request):
