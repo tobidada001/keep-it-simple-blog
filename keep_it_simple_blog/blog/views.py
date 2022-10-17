@@ -4,8 +4,9 @@ from .models import Categories, Tags, Post
 
 def index(request):
     posts = Post.objects.all()
-    user = User.objects.all()
-    return render(request, 'blog/index.html', {'posts': posts, 'user': user})
+    categories = Categories.objects.all()
+    tags = Tags.objects.all()
+    return render(request, 'blog/index.html', {'posts': posts[:5], 'categories': categories, 'tags': tags})
 # Create your views here.
 
 def archives(request):
