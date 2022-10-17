@@ -55,7 +55,7 @@
                     <h1 class="s-header__logotext">
                         <a href="{% url 'index' %}" title="">Keep It Simple.</a>
                     </h1>
-                    <p class="s-header__tagline">Put your awesome tagline here.</p>
+                    <p class="s-header__tagline">A powerful website with a simple and minimalist design.</p>
                 </div>
             </div>
         </div> <!-- end row -->
@@ -152,10 +152,10 @@
                     <h3  class="h6">Navigate</h3>
     
                     <ul class="s-footer__list s-footer-list--nav group">
-                        <li><a href="#0">Home</a></li>
-                        <li><a href="#0">Blog</a></li>
-                        <li><a href="#0">Demo</a></li>
-                        <li><a href="#0">Archives</a></li>
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="{% url 'blog' %}">Blog</a></li>
+                        <li><a href="{% url 'demo' %}">Demo</a></li>
+                        <li><a href="{% url 'archives' %}">Archives</a></li>
                         <li><a href="#0">About</a></li>
                     </ul>
                 </div>
@@ -164,7 +164,7 @@
 
         <div class="ss-copyright">
             <span>© Copyright Keep It Simple 2019</span> 
-            <span>Design by <a href="https://www.styleshout.com/">StyleShout</a></span>
+            <span>Design by <a href="https://www.styleshout.com/" target="_blank">StyleShout</a></span>
         </div>
 
     </div> <!-- end footer__bottom -->
