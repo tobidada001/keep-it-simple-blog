@@ -31,7 +31,7 @@ class Post(models.Model):
     post_title = models.CharField(max_length=100)
     post_body = models.TextField(null=True)
     category = models.ForeignKey(Categories, related_name='categories', on_delete=models.CASCADE)
-    author = models.ForeignKey(User,verbose_name="author", on_delete=models.CASCADE)
+    author = models.ForeignKey(User,related_name= "author", on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tags, related_name = 'tags')
     post_date = models.DateField(auto_now_add=True)
     
