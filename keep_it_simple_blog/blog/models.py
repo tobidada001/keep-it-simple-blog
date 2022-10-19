@@ -2,10 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 
-
-
 class Categories(models.Model):
-
     category = models.CharField(max_length=50)
 
     class Meta:
@@ -16,7 +13,6 @@ class Categories(models.Model):
         return self.category
 
 class Tags(models.Model):
-
     tag_name = models.CharField(max_length=50)
 
     class Meta:
@@ -34,7 +30,6 @@ class Post(models.Model):
     author = models.ForeignKey(User,related_name= "author", on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tags, related_name = 'tags')
     post_date = models.DateField(auto_now_add=True)
-    
 
     class Meta:
         verbose_name = ("Post")

@@ -20,7 +20,7 @@
                     <header class="entry__header">
 
                         <h2 class="entry__title h1">
-                            <a href="{% url 'blog_single' post.id %}" title="">{{post.post_title}}</a>
+                            <a href="{% url 'blog_single' post.post_title %}" title="">{{post.post_title}}</a>
                         </h2>
 
                         <div class="entry__meta">
@@ -37,7 +37,7 @@
                         <p>
                         {{post.post_body|truncatewords:60}}
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="{% url 'blog_single' post.id %}">Read More</a>
+                        <a href="{% url 'blog_single' post.post_title %}">Read More</a>
                         </p>
                         
                     </div> 
@@ -45,6 +45,11 @@
                 </article> <!-- end entry -->
                 {% endfor %}
                 
+                <div class="post-list-nav">
+                    <a rel="prev" href="#0">Prev</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a rel="next" href="#0">Next</a>
+                </div>
+
            </div> <!-- end main -->
 
 

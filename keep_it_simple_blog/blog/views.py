@@ -15,7 +15,10 @@ def archives(request):
     return render(request, 'blog/archives.html', {'posts': post, 'cat': category})
 
 def blog(request):
-    return render(request, 'blog/blog.html')
+    posts = Post.objects.all()
+    categories = Categories.objects.all()
+    tags = Tags.objects.all()
+    return render(request, 'blog/blog.html',{'posts': posts[:5], 'categories': categories, 'tags': tags})
 
 def demo(request):
     return render(request, 'blog/demo.html')
@@ -24,8 +27,10 @@ def page(request):
     return render(request, 'blog/page.html')
 
 def single(request, pk):
-    post = Post.objects.get(id = pk)
-    return render(request, 'blog/single.html', {'post': post})
+    post = Post.objects.get(post_title = pk)
+    mytags = post.tags.all()
+    
+    return render(request, 'blog/single.html', {'post': post, 'mytags': mytags})
 
 def postlist(request, pk):
     post = Categories.objects.get(category = pk)
