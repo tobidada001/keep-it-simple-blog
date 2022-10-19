@@ -6,6 +6,7 @@ urlpatterns = [
     path('blog', views.blog, name = "blog"),
     path('demo', views.demo, name = "demo"),
     path('page', views.page, name = "page"),
-    path('single', views.single, name = "single"),
-    
+    path('blog/<int:pk>', views.single, name = "blog_single"),
+    path('post-category/<str:pk>', views.postlist, name="postlist"),
+    path('tags/<str:pk>', views.tagposts, name="tagposts"),
 ]

@@ -1,0 +1,46 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+
+{% block content %}
+    
+
+    
+<div class="s-content">
+
+        <div class="row">
+
+            <div id="main" class="s-content__main large-8 column">
+
+                <section class="page-content">
+
+                    <h2 class="page-content__title h1">Posts with Tag -- {{tag.tag_name}}</h2>
+                    
+                    
+                    {% if tags %}
+                        
+                    <ul>
+                        
+                        {% for tagpost in tags %}
+                        <li><a href="{% url 'blog_single' tagpost.id %}">{{tagpost.post_title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                   
+                    {% else%}
+                    <p>There are no posts with this Tag.</p>    
+
+                    {% endif %}
+
+                </section> <!-- end page -->
+
+           </div> <!-- end main -->
+
+           {% include "blog/sidebar.html" %}
+           <!-- end sidebar -->
+
+       </div> <!-- end row -->
+
+   </div> <!-- end content-wrap -->
+    
+{% endblock %}
+    
