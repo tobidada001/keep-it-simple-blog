@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 # Create your models here.
 
 class Categories(models.Model):
@@ -29,7 +30,7 @@ class Post(models.Model):
     category = models.ForeignKey(Categories, related_name='categories', on_delete=models.CASCADE)
     author = models.ForeignKey(User,related_name= "author", on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tags, related_name = 'tags')
-    post_date = models.DateField(auto_now_add=True)
+    post_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = ("Post")
