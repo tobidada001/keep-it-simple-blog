@@ -9,8 +9,13 @@
         <div class="row">
 
             <div id="main" class="s-content__main large-8 column">
+                
+                {% if posts %}
+                    
+                
+                    
 
-                {% for post in posts reversed%}
+                {% for post in posts%}
                     
                 <article class="entry">
 
@@ -32,17 +37,20 @@
                     
                     <div class="entry__content">
                         <p>
-                        {{post.post_body|truncatewords:60}}
+                        {{post.post_body|truncatewords:40}}
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="{% url 'blog_single' post.post_title %}">Read More</a>
+                       
                         </p>
                         
                     </div> 
 
                 </article> <!-- end entry -->
                 {% endfor %}
-                
-                
+
+                {% else %}
+                <p class="s-header__tagline" style="text-align: center;">There is no post with this title.</p>
+
+                {% endif %}
 
            </div> <!-- end main -->
 

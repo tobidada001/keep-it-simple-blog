@@ -9,4 +9,7 @@ urlpatterns = [
     path('blog/<str:pk>', views.single, name = "blog_single"),
     path('post-category/<str:pk>', views.postlist, name="postlist"),
     path('tags/<str:pk>', views.tagposts, name="tagposts"),
+    path('search', views.search, name= "process_search"),
+    path('login', views.loginuser, name="login"),
+    path('logout', views.logoutuser, name="logout"),
 ]

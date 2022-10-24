@@ -1,35 +1,54 @@
-from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.contrib.auth.models import User
+from django.contrib.auth import login, logout
+from django.contrib import auth
 from .models import Categories, Tags, Post
 from django.utils import timezone
 import datetime
 
 
+def loginuser(request):
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if User.objects.filter(username = username).exists():
+            print('user already exists')
+            user = auth.authenticate(username = username, password=password)
+            print('User is now authenticated in First IF')
+            print(user)
+            if user.is_authenticated:
+                login(request, user)
+                print('User is now logged in.')
+                return redirect('/')
+            else:
+                return redirect('/')
+        else:
+            a = User.objects.create_user(username = username, password = password)
+            a.save()
+            print(a)
+            user = auth.authenticate(username=username, password = password)
+            
+            if user is not None:
+                login(request, user)
+                print('User is now created and logged in.')
+                return redirect('/')
+
+    return render(request, 'blog/login.html')
+
+def logoutuser(request):
+
+    logout(request)
+    return redirect('/')
+
 def index(request):
     posts = Post.objects.all()
     categories = Categories.objects.all()
     tags = Tags.objects.all()
-    p3 = Post.objects.filter(id=3)
-
-    for p in p3:
-
-        if p.post_date < timezone.now():
-            print('Timezone is lesser')
-        else:
-            print("Timezone is greater")
-
-    # pub_date = Post.objects.filter(p3.post_date <= timezone.now()).order_by('post_date')
-    # for a in pub_date:
-    #     print(a.post_title)
 
 
-    for i in posts:
-        if(i.post_date < timezone.now()):
-            print('Date and time is Lesser than current one')
-        elif i.post_date == timezone.now():
-            print('Date and time are the same with the current one')
-        else:
-            print("They're not the same"  )
+    print(request.user)
 
     return render(request, 'blog/index.html', {'posts': posts[:5], 'categories': categories, 'tags': tags})
 # Create your views here.
@@ -37,7 +56,6 @@ def index(request):
 def archives(request):
     post = Post.objects.all().order_by('-post_date')
     category = Categories.objects.all()
-    p = Post.objects.get(id=5)
 
     return render(request, 'blog/archives.html', {'posts': post, 'cat': category})
 
@@ -56,14 +74,10 @@ def page(request):
 def single(request, pk):
     post = Post.objects.get(post_title = pk)
     mytags = post.tags.all()
-    first_post = Post.objects.all().first()
-    last_post = Post.objects.all().last()
     
     context = {
         'post': post, 
         'mytags': mytags, 
-        'first_post': first_post, 
-        'last_post': last_post
     }
 
     return render(request, 'blog/single.html', context)
@@ -78,3 +92,10 @@ def tagposts(request, pk):
     tag = Tags.objects.get(tag_name = pk)
     tagpost = tag.tags.all()
     return render(request, 'blog/tagposts.html', {'tags': tagpost, 'tag': tag})
+
+def search(request):
+    search = request.GET['searchbox']
+    posts = Post.objects.filter(post_title__icontains=search) 
+    
+    return render(request, 'blog/search.html', {'posts': posts})
+    

@@ -4,4 +4,5 @@ def context_process(request):
     tags = Tags.objects.all()
     categories = Categories.objects.all()
     posts = Post.objects.all()
-    return {'mytags': tags, 'categories': categories, 'posts': posts}
+    user = request.user
+    return {'mytags': tags, 'categories': categories, 'posts': posts, 'user': user}

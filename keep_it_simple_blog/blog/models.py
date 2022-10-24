@@ -39,3 +39,17 @@ class Post(models.Model):
     def __str__(self):
         return self.post_title
 
+
+class Comments(models.Model):
+
+    username = models.CharField(max_length=50)
+    comment = models.CharField(max_length=3000)
+    post = models.ForeignKey(Post, related_name= "post", on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.comment
+
+    class Meta:
+        verbose_name = 'Comments'
+        verbose_name_plural = 'Comments'

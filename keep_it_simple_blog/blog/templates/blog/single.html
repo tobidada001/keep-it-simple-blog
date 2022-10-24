@@ -55,22 +55,18 @@
                     <ul class="entry__post-nav h-group">
                         
                     
-                        {% if post.get_previous_by_post_date %}
+                        {% if not post.get_previous_by_post_date.id == post.id %}
                         
-                        {% if not first_post %}     
-                        <li class="prev"><a rel="prev" href="{% url 'blog_single' post.get_previous_by_post_date %}"><strong class="h6">Previous Article</strong>{{post.get_previous_by_post_date}}</a></li>
-                        
-                        {% endif %} 
-
+                           
+                        <li class="prev"><a rel="prev" href="{% url 'blog_single' pk=post.get_previous_by_post_date.post_title %}"><strong class="h6">Previous Article</strong>{{post.get_previous_by_post_date.post_title}}</a></li>
+   
                         {% endif %}
                        
                         
                         {% if post.get_next_by_post_date %}
-                        {% if not last_post %}
+                    
+                        <li class="next"><a rel="next" href= "{% url 'blog_single' pk=post.get_next_by_post_date.post_title %}"><strong class="h6">Next Article</strong> {{post.get_next_by_post_date.post_title}}</a></li>
                         
-                       
-                        <li class="next"><a rel="next" href="{% url 'blog_single' post.get_next_by_post_date.post_title %}"><strong class="h6">Next Article</strong> {{post.get_next_by_post_date}}</a></li>
-                        {% endif %}
                         {% endif %}
 
                     </ul>
