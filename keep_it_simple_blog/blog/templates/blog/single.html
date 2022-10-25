@@ -190,7 +190,7 @@
             
                             <h3>Add Comment <span>Your email address will not be published</span></h3>
             
-                            <form name="contactForm" id="contactForm" method="post" action="" autocomplete="off">
+                            <form name="contactForm" id="contactForm" method="post" action="{% url 'newcomment' pk=post.post_title %}" autocomplete="off">
                                 {% csrf_token %}
                                 <fieldset>
             
