@@ -12,5 +12,4 @@ urlpatterns = [
     path('search', views.search, name= "process_search"),
     path('login', views.loginuser, name="login"),
     path('logout', views.logoutuser, name="logout"),
-    path('new-comment/<str:pk>', views.new_comment, name = 'newcomment')
 ]

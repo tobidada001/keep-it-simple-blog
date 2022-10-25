@@ -6,18 +6,17 @@ from .models import Categories, Tags, Post, Comments
 from django.utils import timezone
 import datetime
 from django.db.models import Q
-from django.contrib.auth.decorators import login_required
+
 
 def loginuser(request):
     
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-
+ 
         if User.objects.filter(username = username).exists():
             print('user already exists')
             user = auth.authenticate(username = username, password=password)
-            print('User is now authenticated in First IF')
             print(user)
             if user.is_authenticated:
                 login(request, user)
@@ -75,6 +74,17 @@ def single(request, pk):
     mytags = post.tags.all()
     post_comments = post.topic.all()
 
+    if request.method == 'POST':
+        comment = request.POST.get('cMessage')
+        
+        new_comment = Comments(name = request.user.first_name + request.user.last_name, 
+        username = request.user.username, email = request.user.email, comment = comment, post = post )
+
+        new_comment.save()
+        print('New User saved.')
+
+        return redirect('blog_single', post.post_title)
+
     nocs = 0
     for p in post_comments:
         nocs = nocs + 1
@@ -88,8 +98,6 @@ def single(request, pk):
         'totalcomments': nocs
     }
 
-    
-    
     return render(request, 'blog/single.html', context)
 
 def postlist(request, pk):
@@ -109,18 +117,5 @@ def search(request):
     
     return render(request, 'blog/search.html', {'posts': posts})
     
-@login_required(login_url = 'login')    
-def new_comment(request, pk):
-    post = Post.objects.get(post_title = pk)
 
-    if request.method == 'POST':
-        comment = request.POST.get('cMessage')
-        
-        new_comment = Comments(name = request.user.first_name + request.user.last_name, 
-        username = request.user.username, email = request.user.email, comment = comment, post = post )
-
-        new_comment.save()
-
-        return redirect('blog_single', post.post_title)
-
-    return redirect('blog_single', post.post_title)
+    
