@@ -2,10 +2,10 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404, redirec
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.contrib import auth
-from .models import Categories, Tags, Post
+from .models import Categories, Tags, Post, Comments
 from django.utils import timezone
 import datetime
-
+from django.db.models import Q
 
 def loginuser(request):
     
@@ -38,16 +38,14 @@ def loginuser(request):
     return render(request, 'blog/login.html')
 
 def logoutuser(request):
-
     logout(request)
     return redirect('/')
+
 
 def index(request):
     posts = Post.objects.all()
     categories = Categories.objects.all()
     tags = Tags.objects.all()
-
-
     print(request.user)
 
     return render(request, 'blog/index.html', {'posts': posts[:5], 'categories': categories, 'tags': tags})
@@ -74,12 +72,30 @@ def page(request):
 def single(request, pk):
     post = Post.objects.get(post_title = pk)
     mytags = post.tags.all()
-    
-    context = {
+    post_comments = post.topic.all()
+
+    nocs = 0
+    for p in post_comments:
+        nocs = nocs + 1
+        for reply in p.main_comment.all():
+            nocs = nocs + 1
+
+    context = { 
         'post': post, 
         'mytags': mytags, 
+        'comments': post_comments,
+        'totalcomments': nocs
     }
 
+    if request.method == 'POST':
+        comment = request.POST.get('cMessage')
+        
+        new_comment = Comments(name = request.user.first_name + request.user.last_name, 
+        username = request.user.username, email = request.user.email, comment = comment, post = post )
+
+        new_comment.save()
+        return redirect('blog_single', post.post_title)
+    
     return render(request, 'blog/single.html', context)
 
 def postlist(request, pk):
@@ -95,7 +111,7 @@ def tagposts(request, pk):
 
 def search(request):
     search = request.GET['searchbox']
-    posts = Post.objects.filter(post_title__icontains=search) 
+    posts = Post.objects.filter(Q(post_title__icontains=search) | Q(post_body__icontains=search)) 
     
     return render(request, 'blog/search.html', {'posts': posts})
     
