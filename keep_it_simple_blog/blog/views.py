@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404, redirec
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 from .models import Categories, Tags, Post, Comments
 from django.utils import timezone
 import datetime
@@ -9,31 +10,37 @@ from django.db.models import Q
 
 
 def loginuser(request):
-    
+    if request.user.is_authenticated:
+        return redirect('/')
+
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
- 
+
         if User.objects.filter(username = username).exists():
-            print('user already exists')
             user = auth.authenticate(username = username, password=password)
-            print(user)
             if user.is_authenticated:
                 login(request, user)
-                print('User is now logged in.')
+
                 return redirect('/')
             else:
                 return redirect('/')
         else:
             a = User.objects.create_user(username = username, password = password)
             a.save()
-            print(a)
             user = auth.authenticate(username=username, password = password)
             
             if user is not None:
                 login(request, user)
-                print('User is now created and logged in.')
-                return redirect('/')
+
+                if user.is_authenticated:
+                    login(request, user)
+                    print('In second IF, user is authenticated')
+                    if 'next' in request.POST:
+                        print(request.POST.get('next'))
+                        return redirect(request.POST.get('next'))
+            else:
+                return redirect('login')
 
     return render(request, 'blog/login.html')
 
@@ -66,24 +73,13 @@ def blog(request):
 def demo(request):
     return render(request, 'blog/demo.html')
 
-def page(request):
-    return render(request, 'blog/page.html')
+def about(request):
+    return render(request, 'blog/about.html')
 
 def single(request, pk):
     post = Post.objects.get(post_title = pk)
     mytags = post.tags.all()
     post_comments = post.topic.all()
-
-    if request.method == 'POST':
-        comment = request.POST.get('cMessage')
-        
-        new_comment = Comments(name = request.user.first_name + request.user.last_name, 
-        username = request.user.username, email = request.user.email, comment = comment, post = post )
-
-        new_comment.save()
-        print('New User saved.')
-
-        return redirect('blog_single', post.post_title)
 
     nocs = 0
     for p in post_comments:
@@ -101,13 +97,13 @@ def single(request, pk):
     return render(request, 'blog/single.html', context)
 
 def postlist(request, pk):
-    post = Categories.objects.get(category = pk)
+    post = Categories.objects.get_object_or_404(category = pk)
     posts = post.categories.all()
    
     return render(request, 'blog/postlist.html', {'category_post': posts, 'post': post})
 
 def tagposts(request, pk):
-    tag = Tags.objects.get(tag_name = pk)
+    tag = Tags.objects.get_object_or_404(tag_name = pk)
     tagpost = tag.tags.all()
     return render(request, 'blog/tagposts.html', {'tags': tagpost, 'tag': tag})
 
@@ -116,6 +112,21 @@ def search(request):
     posts = Post.objects.filter(Q(post_title__icontains=search) | Q(post_body__icontains=search)) 
     
     return render(request, 'blog/search.html', {'posts': posts})
-    
 
+@login_required(login_url='login')    
+def addcomment(request,pk):
+    post = Post.objects.get(post_title = pk)
+    print(post)
+    if request.method == 'POST':
+        comment = request.POST.get('cMessage')
+        
+        new_comment = Comments(name = request.user.first_name + request.user.last_name, 
+        username = request.user.username, email = request.user.email, comment = comment, post = post )
+
+        new_comment.save()
+        print('New User saved.')
+
+        return redirect('blog_single', post.post_title)
+    else:
+        return render(request, 'blog/single.html')
     

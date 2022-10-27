@@ -3,13 +3,13 @@
 
 
 {% block content %}
- 
+            
     <div class="s-content">
-
+                    
         <div class="row">
-
+                
             <div id="main" class="s-content__main large-8 column">
-
+                    <h1 style="margin-left: 0rem; margin-top: 0;" class="entry__title h1">Latest Posts</h1><br>
                 {% for post in posts reversed%}
                     
                 <article class="entry">
@@ -43,7 +43,7 @@
                 {% endfor %}
                 
                 
-
+                <a href="{% url 'blog' %}"><button>See All Posts</button></a>
            </div> <!-- end main -->
 
 

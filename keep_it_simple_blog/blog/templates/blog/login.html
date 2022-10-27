@@ -10,6 +10,9 @@
      <input style="margin-left: 30rem" name="username" type="text" placeholder="Username" class="text-search">
      <input name="password" style="margin-left: 30rem;" type="password" placeholder="Password" class="text-search">
 
+     {% if request.GET.next %}                
+     <input type="hidden" name="next" value="{{request.GET.next}}"/>
+     {% endif %}
 
     <input type="submit" style="margin-left: 30rem;" value="Login">
     

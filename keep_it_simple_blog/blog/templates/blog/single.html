@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="entry__content">
-                        <p class="lead">
+                        <p class="lead" style="font-size: 1.6rem;">
                         {{post.post_body|linebreaksbr}}
                         </p>
                     </div> <!-- entry__content -->
@@ -190,14 +190,15 @@
             
                             <h3>Add Comment <span>Your email address will not be published</span></h3>
             
-                            <form name="contactForm" id="contactForm" method="post" action="" autocomplete="off">
+                            <form name="contactForm" id="contactForm" method="post" action="{% url 'addcomment' post.post_title %}" autocomplete="off">
                                 {% csrf_token %}
                                 <fieldset>
             
                                     <div class="message form-field">
                                         <textarea name="cMessage" id="cMessage" class="h-full-width" placeholder="Your Message"></textarea>
                                     </div>
-            
+                                    
+                                   
                                     <input name="submit" id="submit" class="btn btn--primary btn-wide btn--large h-full-width" value="Add Comment" type="submit">
             
                                 </fieldset>
