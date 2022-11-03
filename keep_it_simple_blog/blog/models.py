@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
+from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 
 class Categories(models.Model):
@@ -24,13 +25,15 @@ class Tags(models.Model):
         return self.tag_name
 
 class Post(models.Model):
-
+    
     post_title = models.CharField(max_length=100)
-    post_body = models.TextField(null=True)
+    post_body = RichTextUploadingField()
+    cover = models.ImageField(upload_to='images', blank=True)
     category = models.ForeignKey(Categories, related_name='categories', on_delete=models.CASCADE)
     author = models.ForeignKey(User,related_name= "author", on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tags, related_name = 'tags')
     post_date = models.DateTimeField(auto_now_add=True)
+    slug = models.SlugField(default = 1)
 
     class Meta:
         verbose_name = ("Post")
@@ -71,3 +74,24 @@ class Replies(models.Model):
     class Meta:
         verbose_name = 'Replies'
         verbose_name_plural = 'Replies'
+
+
+class Contact(models.Model):
+
+    contact_name = models.CharField('Name', max_length=100)
+    contact_email = models.EmailField("Email Address", max_length=254)
+    subject = models.CharField('Subject', max_length=80)
+    message = models.CharField('Your Message' , max_length=2000)
+
+    class Meta:
+        verbose_name = 'Contact'
+        verbose_name_plural = 'Contacts'
+    
+    def __str__(self):
+        return self.contact_name + ' :: ' + self.subject
+
+class newdef(models.Model):
+    myname = models.CharField(max_length=50)
+    cover = models.ImageField(upload_to='static/', default= 1)
+    mydata = RichTextUploadingField()
+   

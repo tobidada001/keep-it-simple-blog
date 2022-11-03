@@ -10,21 +10,21 @@
 
             <div id="main" class="s-content__main large-8 column">
                 
-                {% for post in posts %}
+                {% for p in page %}
                     
                 <article class="entry">
 
                     <header class="entry__header">
 
                         <h2 class="entry__title h1">
-                            <a href="{% url 'blog_single' post.post_title %}" title="">{{post.post_title}}</a>
+                            <a href="{% url 'blog_single' p.post_title %}" title="">{{p.post_title}}</a>
                         </h2>
 
                         <div class="entry__meta">
                             <ul>
-                                <li>{{post.post_date}}</li>
-                                <li><a href="#0" title="" rel="category tag">{{post.category}}</a></li>
-                                <li>{{post.author}}</li>
+                                <li>{{p.post_date}}</li>
+                                <li><a href="#0" title="" rel="category tag">{{p.category}}</a></li>
+                                <li>{{p.author}}</li>
                             </ul>
                         </div>
                      
@@ -32,7 +32,7 @@
                     
                     <div class="entry__content">
                         <p>
-                        {{post.post_body|truncatewords:50}}
+                        {{p.post_body|truncatewords:50}}
                         </p>
                     </div> 
 
@@ -40,8 +40,22 @@
                 {% endfor %}
                 <!-- page nav -->
                 <div class="post-list-nav">
-                    <a rel="prev" href="#0">Prev</a>
-                    <a rel="next" href="#0">Next</a>
+                    
+                    {% if page.has_previous %}
+                    <a rel="prev" href="?page={{page.previous_page_number}}">Prev</a>
+                    {% endif %}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span> Page {{page.number}} of {{page.paginator.num_pages}}
+
+                    </span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;                    
+                    {% if page.has_next %}
+                    <a rel="next" href="?page={{page.next_page_number}}">Next</a>
+                    {% endif %}
+                        
+                    
                 </div>
 
            </div> <!-- end main -->

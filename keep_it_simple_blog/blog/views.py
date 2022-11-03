@@ -7,12 +7,16 @@ from .models import Categories, Tags, Post, Comments
 from django.utils import timezone
 import datetime
 from django.db.models import Q
+from django.core.paginator import Paginator
+from .forms import ContactForm, NewPost
+from django.contrib import messages
+from django.core.files.uploadedfile import SimpleUploadedFile
+from PIL import Image
+import os
 
 
 def loginuser(request):
-    if request.user.is_authenticated:
-        return redirect('/')
-
+   
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -21,10 +25,9 @@ def loginuser(request):
             user = auth.authenticate(username = username, password=password)
             if user.is_authenticated:
                 login(request, user)
-
                 return redirect('/')
             else:
-                return redirect('/')
+                return redirect('login')
         else:
             a = User.objects.create_user(username = username, password = password)
             a.save()
@@ -34,13 +37,10 @@ def loginuser(request):
                 login(request, user)
 
                 if user.is_authenticated:
-                    login(request, user)
-                    print('In second IF, user is authenticated')
-                    if 'next' in request.POST:
-                        print(request.POST.get('next'))
-                        return redirect(request.POST.get('next'))
+                    return redirect('/')
             else:
                 return redirect('login')
+        
 
     return render(request, 'blog/login.html')
 
@@ -50,12 +50,13 @@ def logoutuser(request):
 
 
 def index(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('post_date')
     categories = Categories.objects.all()
     tags = Tags.objects.all()
+
     print(request.user)
 
-    return render(request, 'blog/index.html', {'posts': posts[:5], 'categories': categories, 'tags': tags})
+    return render(request, 'blog/index.html', {'posts': posts, 'categories': categories, 'tags': tags})
 # Create your views here.
 
 def archives(request):
@@ -65,19 +66,24 @@ def archives(request):
     return render(request, 'blog/archives.html', {'posts': post, 'cat': category})
 
 def blog(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-post_date')
     categories = Categories.objects.all()
     tags = Tags.objects.all()
-    return render(request, 'blog/blog.html',{'posts': posts[:5], 'categories': categories, 'tags': tags})
 
-def demo(request):
-    return render(request, 'blog/demo.html')
+    page = Paginator(posts, 5)
+    page_num = request.GET.get('page')
+    getpage = page.get_page(page_num)
+
+    return render(request, 'blog/blog.html',{'page': getpage, 'categories': categories, 'tags': tags})
+
 
 def about(request):
     return render(request, 'blog/about.html')
 
+
 def single(request, pk):
-    post = Post.objects.get(post_title = pk)
+    post = get_object_or_404(Post, post_title = pk)
+    
     mytags = post.tags.all()
     post_comments = post.topic.all()
 
@@ -87,25 +93,23 @@ def single(request, pk):
         for reply in p.main_comment.all():
             nocs = nocs + 1
 
-    context = { 
-        'post': post, 
-        'mytags': mytags, 
-        'comments': post_comments,
-        'totalcomments': nocs
-    }
+    context = {'post': post, 'mytags': mytags, 'comments': post_comments, 'totalcomments': nocs}
 
     return render(request, 'blog/single.html', context)
 
+
 def postlist(request, pk):
-    post = Categories.objects.get_object_or_404(category = pk)
+    post = get_object_or_404(Categories, category = pk)
     posts = post.categories.all()
    
     return render(request, 'blog/postlist.html', {'category_post': posts, 'post': post})
 
+
 def tagposts(request, pk):
-    tag = Tags.objects.get_object_or_404(tag_name = pk)
+    tag = get_object_or_404(Tags, tag_name = pk)
     tagpost = tag.tags.all()
     return render(request, 'blog/tagposts.html', {'tags': tagpost, 'tag': tag})
+
 
 def search(request):
     search = request.GET['searchbox']
@@ -113,20 +117,119 @@ def search(request):
     
     return render(request, 'blog/search.html', {'posts': posts})
 
-@login_required(login_url='login')    
+
 def addcomment(request,pk):
-    post = Post.objects.get(post_title = pk)
+    post = get_object_or_404(Post, post_title = pk)
     print(post)
+
     if request.method == 'POST':
         comment = request.POST.get('cMessage')
-        
+        print('Now in the post method')
         new_comment = Comments(name = request.user.first_name + request.user.last_name, 
         username = request.user.username, email = request.user.email, comment = comment, post = post )
 
         new_comment.save()
-        print('New User saved.')
+        print('New comment saved.')
 
         return redirect('blog_single', post.post_title)
-    else:
-        return render(request, 'blog/single.html')
+
+    elif request.method == 'GET':
+        print('Request is GET')
+        print('It seems an error occured')
+        return redirect('blog_single', post.post_title)
+
+
+def privacy(request):
     
+    return render(request, 'blog/privacy.html')
+
+
+def contact(request):
+    myform = ContactForm()
+
+    if request.method == 'POST':
+        myform = ContactForm(request.POST)
+
+        if myform.is_valid():
+            myform.save()
+            messages.info(request, 'Thank you for the feedback! Your message has been successfully sent!')
+            return redirect('contact')
+        else:
+            print('Form is not valid')
+            for msg in myform.error_messages:
+
+                messages.info(request,'Ooops! An error occured! Please try again later.')
+    else:
+        myform = ContactForm()
+    return render(request, 'blog/contact.html', {'myform': myform})
+
+
+def newpost(request):
+    newpost = NewPost(request.FILES)
+    
+    if request.method == 'POST':
+        print('My FILES: ', request.FILES)
+        newpost = NewPost(request.POST, request.FILES)
+        if newpost.is_valid():
+            post_title = newpost.cleaned_data.get('post_title')
+            post_body = newpost.cleaned_data.get('post_body')
+            cover = newpost.cleaned_data.get('cover')
+            category = newpost.cleaned_data.get('category')
+            author = newpost.cleaned_data.get('author')
+            tags = newpost.cleaned_data.get('tags')
+
+            print('Cover: ',cover)
+            new_post = Post(post_title = post_title, post_body = post_body,
+            category = category, author = author, cover = cover)
+            new_post.save()
+           
+            for tag in tags:
+                new_post.tags.add(tag)
+             
+            new_post.save()
+        else:
+            print('Data is not Valid')
+    else:
+        newpost = NewPost(request.FILES)       
+
+    return render(request, 'blog/newpost.html', {'newpostform': newpost})
+
+
+def deletepost(request, pk):
+    post = get_object_or_404(Post, post_title = pk)
+    post.delete()
+
+    return redirect('/')
+
+def editpost(request, pk):
+    post = get_object_or_404(Post, post_title = pk)
+    
+    context = { 'post_title': post.post_title, 'post_body': post.post_body,  'author': post.author,
+        'category': post.category, 'tags': post.tags.all(),}
+    
+    newpost = NewPost(context, {'cover': post.cover}) 
+    
+    if request.method == 'POST':
+        
+        newpost = NewPost(request.POST, request.FILES)
+        if newpost.is_valid():
+            print('NewPostForm is valid\n\n')
+            post.post_title = newpost.cleaned_data.get('post_title')
+            post.post_body = newpost.cleaned_data.get('post_body')
+            post.author = newpost.cleaned_data.get('author')
+            newcover =  newpost.cleaned_data.get('cover')
+            
+            if newcover:
+                post.cover = newcover 
+            else:
+                post.cover = post.cover
+            post.category = newpost.cleaned_data['category']
+            post.tags.set(newpost.cleaned_data['tags'])
+            post.save()
+            newpost = NewPost()
+
+            return redirect('blog_single', post.post_title)
+        else:
+            print('Data is not Valid')
+
+    return render(request, 'blog/editpost.html', {'newpostform': newpost, 'post': post})

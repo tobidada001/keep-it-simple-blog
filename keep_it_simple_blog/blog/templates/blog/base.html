@@ -53,10 +53,17 @@
 
         <div class="row">
             <div class="s-header__content column">
+
+                   
+                   
+                    <a href="{% url 'newpost' %}"> NEW POST </a>
+                    <br>
+                    <br>
                 <div class="s-header__brand">
                     <h1 class="s-header__logotext">
                         <a href="{% url 'index' %}" title="">Keep It Simple.</a>
                     </h1>
+                    
                     <p class="s-header__tagline">A powerful website with a simple and minimalist design.</p>
                 </div>
             </div>
@@ -68,13 +75,11 @@
             <div class="row">
 
                 <ul class="s-header__nav">
+                        
                     <li>
                         <a href="{% url 'index' %}">Home</a>
                     </li>
                     
-                    <li>
-                        <a href="{% url 'demo' %}">Demo</a>
-                    </li>
                     <li>
                         <a href="{% url 'archives' %}">Archives</a>
                     </li>
@@ -88,10 +93,10 @@
                                 <a href="{% url 'about' %}">About Us</a>
                                 </li>
                             <li>
-                                <a href="#0">Contact Us</a>
+                                <a href="{% url 'contact' %}">Contact Us</a>
                             </li>
                             <li>
-                                <a href="#0">Privacy Policy</a>
+                                <a href="{% url 'privacy' %}">Privacy Policy</a>
                             </li>
                            
                             
@@ -109,6 +114,8 @@
                            
                 
                     </li>
+
+                   
 
                     
                         
@@ -249,12 +256,7 @@
                             <li>
                                 <a href="{% url 'index' %}">Home</a>
                             </li>
-                            <!-- <li>
-                                <a href="{% url 'blog' %}">Blog</a>
-                            </li> -->
-                            <li>
-                                <a href="{% url 'demo' %}">Demo</a>
-                            </li>
+                            
                             <li>
                                 <a href="{% url 'archives' %}">Archives</a>
                             </li>

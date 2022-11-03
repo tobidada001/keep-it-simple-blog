@@ -1,0 +1,18 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data" action="{% url 'newpost' %}" style="width: 80%; background-color: #fff; margin: auto; padding: 5em;">
+    {% csrf_token %}
+    
+    {{newpostform.media}}
+    {{newpostform.as_p}}
+
+
+    <input type="submit" value="Post">
+</form>
+
+
+{% endblock content %}
+    

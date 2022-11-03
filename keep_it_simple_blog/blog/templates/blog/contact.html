@@ -1,0 +1,34 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+    <div style="background: white; ">
+        
+        {% if messages %}
+        
+        {% for m in messages %}
+      
+        <div class="alert-box alert-box--info hideit" style="width: 60%; margin: auto;">
+                <p>{{m}}</p>
+                <i class="fa fa-times alert-box__close" aria-hidden="true"></i>
+            </div>
+            {% endfor %}
+        {% endif %}
+            
+
+            
+                <br>
+        <form action="" method="POST" style="margin-right: 10%; margin-left: 10%; background: white;">
+            {% csrf_token %}
+            <br><br>
+            {{myform}}
+            <input type="submit"  value="Send Message">
+        </form>
+
+    </div>
+
+   
+{% endblock%}
