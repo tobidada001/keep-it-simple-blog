@@ -53,12 +53,14 @@
 
         <div class="row">
             <div class="s-header__content column">
+                   
+                   {% if request.user.is_superuser %}
+              
+                    <a style="font-weight: bolder; font-family: sans-serif;" href="{% url 'newpost' %}"> ADD NEW POST </a>
+                    <br>
+                    <br>
+                    {% endif %}
 
-                   
-                   
-                    <a href="{% url 'newpost' %}"> NEW POST </a>
-                    <br>
-                    <br>
                 <div class="s-header__brand">
                     <h1 class="s-header__logotext">
                         <a href="{% url 'index' %}" title="">Keep It Simple.</a>

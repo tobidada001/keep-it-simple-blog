@@ -165,6 +165,8 @@ def contact(request):
 
 
 def newpost(request):
+    if not request.user.is_superuser:
+        return redirect('/')
     newpost = NewPost(request.FILES)
     
     if request.method == 'POST':
@@ -175,33 +177,38 @@ def newpost(request):
             post_body = newpost.cleaned_data.get('post_body')
             cover = newpost.cleaned_data.get('cover')
             category = newpost.cleaned_data.get('category')
-            author = newpost.cleaned_data.get('author')
+            # author = newpost.cleaned_data.get('author')
             tags = newpost.cleaned_data.get('tags')
 
             print('Cover: ',cover)
             new_post = Post(post_title = post_title, post_body = post_body,
-            category = category, author = author, cover = cover)
+            category = category, author = request.user, cover = cover)
             new_post.save()
            
             for tag in tags:
                 new_post.tags.add(tag)
              
             new_post.save()
+            return redirect('blog_single', new_post.post_title)
         else:
             print('Data is not Valid')
     else:
-        newpost = NewPost(request.FILES)       
+        newpost = NewPost()       
 
     return render(request, 'blog/newpost.html', {'newpostform': newpost})
 
 
 def deletepost(request, pk):
+    if not request.user.is_superuser:
+        return redirect('/')
     post = get_object_or_404(Post, post_title = pk)
     post.delete()
 
     return redirect('/')
 
 def editpost(request, pk):
+    if not request.user.is_superuser:
+        return redirect('/')
     post = get_object_or_404(Post, post_title = pk)
     
     context = { 'post_title': post.post_title, 'post_body': post.post_body,  'author': post.author,
