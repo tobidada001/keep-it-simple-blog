@@ -223,7 +223,7 @@ def editpost(request, pk):
             print('NewPostForm is valid\n\n')
             post.post_title = newpost.cleaned_data.get('post_title')
             post.post_body = newpost.cleaned_data.get('post_body')
-            post.author = newpost.cleaned_data.get('author')
+            post.author = request.user
             newcover =  newpost.cleaned_data.get('cover')
             
             if newcover:
