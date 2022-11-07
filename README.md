@@ -1,10 +1,9 @@
 # keep-it-simple-blog
 This project focuses on building a blog app using Python and Django Framework.
 
-As of now, the requirement for running the application are: 
+# Create a virtual environment
 
-* Django Version 4.1
-* django-ckeditor
-* Pillow
+## Install the requirements for this project using: pip install -r requirements.txt in your virtual env
 
-First make sure you make migrations and migrate the tables to the sqlite database, and then create your SUPERUSER from your command line. That way, you'll be able to add post to the blog as an Admin.
+## Make migrations and migrate the models, and then create your SUPERUSER from your command line. 
+That way, you'll be able to add post to the blog as an Admin.

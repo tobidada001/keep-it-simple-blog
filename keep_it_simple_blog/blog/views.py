@@ -1,18 +1,12 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from .models import Categories, Tags, Post, Comments
-from django.utils import timezone
-import datetime
 from django.db.models import Q
 from django.core.paginator import Paginator
 from .forms import ContactForm, NewPost
-from django.contrib import messages
-from django.core.files.uploadedfile import SimpleUploadedFile
-from PIL import Image
-import os
 
 
 def loginuser(request):
