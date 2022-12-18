@@ -35,7 +35,7 @@
                         
                           <p>
                                
-                        {{post.post_body|safe|truncatewords:200}}
+                        {{post.post_body|safe|truncatewords:80}}
                             &nbsp;&nbsp;&nbsp;&nbsp;
                         <a href="{% url 'blog_single' post.post_title %}">Read More</a>
                         </p>

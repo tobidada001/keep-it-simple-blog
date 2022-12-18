@@ -14,9 +14,7 @@
                 
                 {% if request.user.is_superuser %}
                     
-                
-                    
-                <a href="{% url 'editpost' post.post_title %}">Edit</a> &nbsp; &nbsp; | &nbsp; &nbsp; <a href="{% url 'deletepost' post.post_title %}">Delete</a><br><br>
+                <a href="{% url 'editpost' post.post_title %}"> <i class="fa fa-pencil"></i> Edit</a> &nbsp; &nbsp; | &nbsp; &nbsp; <a href="{% url 'deletepost' post.post_title %}"> <i class="fa fa-remove"></i> Delete</a><br><br>
                 
                 {% endif %}
                 <article class="entry">
@@ -48,7 +46,7 @@
 
                     <div class="entry__content">
                         <p class="lead" style="font-size: 1.6rem;">
-                        {{post.post_body|safe|linebreaksbr}}
+                        {{post.post_body|safe|linebreaks}}
                         </p>
                     </div> <!-- entry__content -->
 

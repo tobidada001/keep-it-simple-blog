@@ -31,6 +31,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="static 'apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="static 'favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="static 'favicon-16x16.png' %}">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
     <link rel="manifest" href="site.webmanifest">
 
 </head>
@@ -56,7 +58,7 @@
                    
                    {% if request.user.is_superuser %}
               
-                    <a style="font-weight: bolder; font-family: sans-serif;" href="{% url 'newpost' %}"> ADD NEW POST </a>
+                    <a style="font-weight: bolder; color: #555; font-family: sans-serif;" href="{% url 'newpost' %}"> <i class="fa fa-plus fa-lg"></i>   Add Post </a>
                     <br>
                     <br>
                     {% endif %}
@@ -142,42 +144,21 @@
 
         <div class="row s-footer__top">
             <div class="column">
-                <ul class="s-footer__social">
-                    <li>
-                        <a href="#0">
-                            <i class="fab fa-facebook-f" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#0">
-                            <i class="fab fa-twitter" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#0">
-                            <i class="fab fa-youtube" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#0">
-                            <i class="fab fa-vimeo-v" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#0">
-                            <i class="fab fa-instagram" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#0">
-                            <i class="fab fa-linkedin" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#0">
-                            <i class="fab fa-skype" aria-hidden="true"></i>
-                        </a>
-                    </li>
+                <ul class="s-footer__social" style="display: inline-flex;">
+                    
+                    {% for links in social_links %}
+                        
+                     {% for key, value in links.items %}
+                    
+                        <li> <a href="{{value}}" target="_blank"><i class="fa fa-{{key}} fa-10x" style="width: 2vw; height: 2vw;"></i></a> </li>
+                    
+                    {% endfor %}
+                    {% endfor %}
+                    
+                        
+                        
+                    
+                
                 </ul>
             </div>
         </div>
@@ -206,46 +187,16 @@
                         <h3 class="h6">Photostream</h3>
 
                         <ul class="photostream group">
+                            
+                            {% for thumb in thumbs %}
+                           
                             <li>
                                 <a href="#0">
                                     <img alt="thumbnail" src="{% static 'images/thumb.jpg' %}">
                                 </a>
                             </li>
-                            <li>
-                                <a href="#0">
-                                    <img alt="thumbnail" src="{% static 'images/thumb.jpg' %}">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#0">
-                                    <img alt="thumbnail" src="{% static 'images/thumb.jpg' %}">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#0">
-                                    <img alt="thumbnail" src="{% static 'images/thumb.jpg' %}">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#0">
-                                    <img alt="thumbnail" src="{% static 'images/thumb.jpg' %}">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#0">
-                                    <img alt="thumbnail" src="{% static 'images/thumb.jpg' %}">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#0">
-                                    <img alt="thumbnail" src="{% static 'images/thumb.jpg' %}">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#0">
-                                    <img alt="thumbnail" src="{% static 'images/thumb.jpg' %}">
-                                </a>
-                            </li>
+                            {% endfor %}
+                                
                         </ul>
 
                     </div>

@@ -30,7 +30,7 @@ class Post(models.Model):
     post_body = RichTextUploadingField()
     cover = models.ImageField(upload_to='images', blank=True)
     category = models.ForeignKey(Categories, related_name='categories', on_delete=models.CASCADE)
-    author = models.ForeignKey(User,related_name= "author", blank=True, on_delete=models.CASCADE)
+    author = models.ForeignKey(User,related_name= "author", null=True, blank=True, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tags, related_name = 'tags')
     post_date = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(default = 1)

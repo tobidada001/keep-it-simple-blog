@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from .forms import ContactForm, NewPost
 
 
+
 def loginuser(request):
    
     if request.method == 'POST':
@@ -171,7 +172,6 @@ def newpost(request):
             post_body = newpost.cleaned_data.get('post_body')
             cover = newpost.cleaned_data.get('cover')
             category = newpost.cleaned_data.get('category')
-            # author = newpost.cleaned_data.get('author')
             tags = newpost.cleaned_data.get('tags')
 
             print('Cover: ',cover)
