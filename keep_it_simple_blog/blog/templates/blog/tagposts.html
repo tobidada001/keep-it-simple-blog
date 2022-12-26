@@ -1,10 +1,7 @@
 {% extends "blog/base.html" %}
 {% load static %}
 
-
 {% block content %}
-    
-
     
 <div class="s-content">
 
@@ -22,7 +19,7 @@
                     <ul>
                         
                         {% for tagpost in tags %}
-                        <li><a href="{% url 'blog_single' tagpost.post_title %}">{{tagpost.post_title}}</a></li>
+                        <li><a href="{{tagpost.get_absolute_url}}">{{tagpost.post_title}}</a></li>
                         {% endfor %}
                     </ul>
                    

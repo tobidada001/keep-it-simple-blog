@@ -19,7 +19,7 @@ class NewPost(forms.ModelForm):
     post_body = forms.CharField(widget = CKEditorUploadingWidget())
     class Meta:
         model = Post
-        fields = ('post_title', 'post_body' , 'cover', 'category', 'tags',)
+        fields = ('post_title', 'post_body' , 'cover', 'category', 'tags', )
         widgets = {
 
             "post_title" : forms.TextInput(attrs = {"class": "cnameclass", "style": "width:100%"}),

@@ -22,7 +22,7 @@
                     <ul>
                         
                         {% for post in category_post %}
-                        <li><a href="{% url 'blog_single' post.post_title %}">{{post.post_title}}</a></li>
+                        <li><a href="{{post.get_absolute_url}}">{{post.post_title}}</a></li>
                         {% endfor %}
                     </ul>
                    

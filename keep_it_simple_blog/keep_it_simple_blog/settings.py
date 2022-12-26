@@ -13,7 +13,7 @@ SECRET_KEY = 'django-insecure-mjys4@#ss0m2mcwp!kq5(8$@m8a*l*zp)o+)ig(cuz^3qhprdt
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = "pillow"
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'blog',
     'ckeditor',
     'ckeditor_uploader',
+    'django_social_share'
 ]
 
 MIDDLEWARE = [
@@ -76,8 +77,12 @@ WSGI_APPLICATION = 'keep_it_simple_blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mynewdb',
+        'USER': 'root',
+        'PASSWORD': '',
+        'PORT': '3306',
+        'HOST': 'localhost',
     }
 }
 

@@ -10,6 +10,8 @@
         <div class="row">
                 
             <div id="main" class="s-content__main large-8 column">
+                {% if posts %}
+              
                     <h1 style="margin-left: 0rem; margin-top: 0;" class="entry__title h1">Latest Posts</h1><br>
                 {% for post in posts reversed%}
                     
@@ -18,7 +20,7 @@
                     <header class="entry__header">
 
                         <h2 class="entry__title h1">
-                            <a href="{% url 'blog_single' post.post_title %}" title="">{{post.post_title}}</a>
+                            <a href="{{post.get_absolute_url}}" title="">{{post.post_title}}</a>
                         </h2>
 
                         <div class="entry__meta">
@@ -35,9 +37,9 @@
                         
                           <p>
                                
-                        {{post.post_body|safe|truncatewords:80}}
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="{% url 'blog_single' post.post_title %}">Read More</a>
+                        {{post.post_body|striptags|safe|truncatewords:40}}
+                            
+                        <a href="{{post.get_absolute_url}}">Read More</a>
                         </p>
                         
                     </div> 
@@ -46,6 +48,10 @@
                 {% endfor %}
                 
                 <a href="{% url 'blog' %}"><button>See All Posts</button></a>
+                
+                {% else %}
+                    <p>There aren't any posts yet. Create new post</p>
+                {% endif %}
            </div> <!-- end main -->
 
 

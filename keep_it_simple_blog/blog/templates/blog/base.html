@@ -35,6 +35,16 @@
     <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
     <link rel="manifest" href="site.webmanifest">
 
+    <style>
+        #userlbl{margin-left: 40rem;}
+        @media screen and (max-width: 1020px){
+            #userlbl{
+        margin-left: 5rem;
+        
+    }
+}
+    </style>
+
 </head>
 
 <body id="top">
@@ -59,6 +69,7 @@
                    {% if request.user.is_superuser %}
               
                     <a style="font-weight: bolder; color: #555; font-family: sans-serif;" href="{% url 'newpost' %}"> <i class="fa fa-plus fa-lg"></i>   Add Post </a>
+                    <a style="font-weight: bolder; color: #555; font-family: sans-serif;" href="{% url 'drafts' %}"> <i class="fa fa-list fa-lg"></i>   Drafts </a>
                     <br>
                     <br>
                     {% endif %}
@@ -108,10 +119,16 @@
                     </li>
                     
                    
-                    <li style="margin-left: 40rem;">
+                    <li  id="userlbl">
                        
                         {% if user.is_authenticated%}
-                           <a href="{% url 'logout' %}" ><span>Logout {{user}}</span> </a>
+                            
+                            {% if user.is_superuser %}
+                                <a href="{% url 'logout' %}" ><span>Logout Admin ({{user}})</span> </a>
+                            {% else %}
+                                
+                                <a href="{% url 'logout' %}" ><span>Logout {{user}}</span> </a>
+                            {% endif %}
                         {% else %}
                            <a href="{% url 'login' %}">Login</a>
                         {% endif %}

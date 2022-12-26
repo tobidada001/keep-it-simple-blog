@@ -1,0 +1,34 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+
+{% block content %}
+            
+    <div class="s-content">
+             
+                    
+        <div class="row">
+                
+            <div id="main" class="s-content__main large-8 column">
+                
+                {% if unpublished %}
+                    <ul>
+                {% for post in unpublished reversed%}
+                    
+                <li><a>{{post.post_title}}</a></li> &nbsp;&nbsp; 
+                <a href="{% url 'publish_post' post.slug %}">Publish</a> &nbsp; | <a href="{% url 'editpost' post.slug %}">Edit</a> &nbsp; | <a href="{% url 'deletepost' pk=post.slug %}">Delete</a>
+                {% endfor %}
+                            
+                </ul>
+                {% else %}
+                <p>You don't have drafts saved right now.</p>
+                {% endif %}
+           </div> <!-- end main -->
+
+
+           {% include "blog/sidebar.html" %} 
+
+       </div> <!-- end row -->
+
+   </div> <!-- end content-wrap -->
+   {% endblock content %}

@@ -3,7 +3,7 @@
 
 
 {% block content %}
-<form method="POST" enctype="multipart/form-data" action="{% url 'editpost' post.post_title %}" style="width: 80%; background-color: #fff; margin: auto; padding: 5em;">
+<form method="POST" enctype="multipart/form-data" action="{% url 'editpost' post.slug %}" style="width: 80%; background-color: #fff; margin: auto; padding: 5em;">
     {% csrf_token %}
     
     {{newpostform.media}}

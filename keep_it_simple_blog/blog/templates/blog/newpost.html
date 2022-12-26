@@ -3,13 +3,23 @@
 
 
 {% block content %}
+
+{% if messages %}
+    
+    {% for message in messages %}
+        <p>{{message}}</p>
+    {% endfor %}
+        
+{% endif %}
+    
 <form method="POST" enctype="multipart/form-data" action="{% url 'newpost' %}" style="width: 80%; background-color: #fff; margin: auto; padding: 5em;">
     {% csrf_token %}
     
     {{newpostform.media}}
     {{newpostform.as_p}}
     
-    <input type="submit" value="Post">
+    <input type="submit" value="Post" name="post">
+    <input type="submit" value="Save Draft" name="draft">
 </form>
 
 

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
+from django.urls import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 
@@ -24,6 +25,10 @@ class Tags(models.Model):
     def __str__(self):
         return self.tag_name
 
+class PublishedPostManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status = True)
+
 class Post(models.Model):
     
     post_title = models.CharField(max_length=100)
@@ -33,7 +38,10 @@ class Post(models.Model):
     author = models.ForeignKey(User,related_name= "author", null=True, blank=True, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tags, related_name = 'tags')
     post_date = models.DateTimeField(auto_now_add=True)
-    slug = models.SlugField(default = 1)
+    slug = models.SlugField(null = True, blank = True, unique = True)
+    status = models.BooleanField(default = True)
+    published = PublishedPostManager()
+    objects = models.Manager()
 
     class Meta:
         verbose_name = ("Post")
@@ -41,6 +49,11 @@ class Post(models.Model):
 
     def __str__(self):
         return self.post_title
+    
+    def get_absolute_url(self):
+        return reverse("blog_single", args=[self.post_date.strftime('%Y'), self.post_date.strftime('%m'),
+        self.post_date.strftime('%d'), self.slug])
+
 
 
 class Comments(models.Model):
@@ -50,6 +63,11 @@ class Comments(models.Model):
     comment = models.CharField(max_length=3000)
     post = models.ForeignKey(Post, related_name= "topic", on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
+    approval_status= models.BooleanField(default= False)
+
+    def get_queryset(self):
+        queryset = super(Comments, self).get_queryset().filter(approval_status = True)
+        return queryset
 
     def __str__(self):
         return self.comment
@@ -89,9 +107,3 @@ class Contact(models.Model):
     
     def __str__(self):
         return self.contact_name + ' :: ' + self.subject
-
-class newdef(models.Model):
-    myname = models.CharField(max_length=50)
-    cover = models.ImageField(upload_to='static/', default= 1)
-    mydata = RichTextUploadingField()
-   
