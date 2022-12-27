@@ -182,7 +182,7 @@
                                             </li> 
                                               
                                         
-                                  {% else %}
+                                  {% elif request.user.is_superuser %}
                                     
                                     
                                     <li class="thread-alt depth-1 comment">
@@ -292,7 +292,7 @@
                     </div> <!-- end comments -->
                     {% if request.user.is_authenticated %}
                     <div class="comment-respond">
-                        
+                        {{request.session.pending}}
                         <!-- START respond -->
                         <div id="respond">
                                 

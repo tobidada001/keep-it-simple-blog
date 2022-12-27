@@ -135,8 +135,15 @@ def addcomment(request, id, pk):
         if request.user.is_superuser:
             new_comment.approval_status = True
 
+        
         new_comment.save()
 
+        if not request.user.is_superuser:
+            request.session['pending'] = 'Your comment is awaiting admin approval...'
+
+            if new_comment.approval_status == True:
+                del request.session['pending']
+                
         return redirect(post.get_absolute_url())
 
     return redirect(post.get_absolute_url())
