@@ -77,14 +77,13 @@ def single(request, year, month, day, pk):
     
     mytags = post.tags.all()
     post_comments = post.topic.filter(approval_status = True)
+    print(post_comments.values())
     all_post_comments = post.topic.all()
-    nocs = 0
-    for p in post_comments:
-        print(p)
-        nocs = nocs + 1
-        for reply in p.main_comment.all():
+    nocs = int(post_comments.count())
+    for reply in post_comments:
+        for r in reply.main_comment.all():
             nocs = nocs + 1
-
+   
     context = {'post': post, 'mytags': mytags, 'comments': post_comments, 'totalcomments': nocs, 'all_comments': all_post_comments }
 
     return render(request, 'blog/single.html', context)
@@ -132,6 +131,9 @@ def addcomment(request, id, pk):
 
         new_comment = Comments(name = request.user.first_name + request.user.last_name, 
         username = request.user.username, email = request.user.email, comment = comment, post = post)
+
+        if request.user.is_superuser:
+            new_comment.approval_status = True
 
         new_comment.save()
 

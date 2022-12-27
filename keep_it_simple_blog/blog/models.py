@@ -39,7 +39,7 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tags, related_name = 'tags')
     post_date = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(null = True, blank = True, unique = True)
-    status = models.BooleanField(default = True)
+    status = models.BooleanField('Tick to publish post.', default = True)
     published = PublishedPostManager()
     objects = models.Manager()
 
@@ -64,7 +64,7 @@ class Comments(models.Model):
     post = models.ForeignKey(Post, related_name= "topic", on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
     approval_status= models.BooleanField(default= False)
-
+    
     def get_queryset(self):
         queryset = super(Comments, self).get_queryset().filter(approval_status = True)
         return queryset
@@ -75,7 +75,7 @@ class Comments(models.Model):
     class Meta:
         verbose_name = 'Comments'
         verbose_name_plural = 'Comments'
-
+        ordering = ('-date_added',)
 
 class Replies(models.Model):
     name = models.CharField(max_length=70)
