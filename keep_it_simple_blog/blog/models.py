@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 import datetime
 from django.urls import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
+from taggit.managers import TaggableManager
 # Create your models here.
 
 class Categories(models.Model):
@@ -15,16 +16,6 @@ class Categories(models.Model):
     def __str__(self):
         return self.category
 
-class Tags(models.Model):
-    tag_name = models.CharField(max_length=50)
-
-    class Meta:
-        verbose_name = ("Tags")
-        verbose_name_plural = ("Tags")
-
-    def __str__(self):
-        return self.tag_name
-
 class PublishedPostManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status = True)
@@ -36,12 +27,12 @@ class Post(models.Model):
     cover = models.ImageField(upload_to='images', blank=True)
     category = models.ForeignKey(Categories, related_name='categories', on_delete=models.CASCADE)
     author = models.ForeignKey(User,related_name= "author", null=True, blank=True, on_delete=models.CASCADE)
-    tags = models.ManyToManyField(Tags, related_name = 'tags')
     post_date = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(null = True, blank = True, unique = True)
     status = models.BooleanField('Tick to publish post.', default = True)
     published = PublishedPostManager()
     objects = models.Manager()
+    tagsagain = TaggableManager()
 
     class Meta:
         verbose_name = ("Post")

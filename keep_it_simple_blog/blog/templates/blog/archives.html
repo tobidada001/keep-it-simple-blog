@@ -18,12 +18,14 @@
                     proident eu ex sunt consectetur consectetur dolore enim nisi exercitation 
                     adipisicing magna culpa commodo deserunt ut do Ut occaecat. Lorem ipsum Veniam 
                     consequat quis.
+                        
+                 
                     </p>	
                     
                     <h4>Last 10 Posts.</h4>
                     <ul>
                         
-                        {% for post in posts %}
+                        {% for post in posts|slice:"10" %}
                             
                         <li><a href="{{post.get_absolute_url }}">{{post.post_title}}</a></li>
 
@@ -31,14 +33,23 @@
                     </ul>
 
                     <h4>Archives By Month.</h4>
-                    <ul>
-                        
-                        {% for p in posts %}
-                            
-                        <li><a href="#0">{{p.post_date}}</a></li>
-                        {% endfor %}
-                    </ul>
+                    
+                        {% regroup posts|dictsortreversed:"post_date" by post_date.date as data %}
+                        <ul>
+                    {% for p in data %}
+                        <li>{{p.grouper}}</li>
 
+                         <ul>
+
+                        {% for y in p.list %}
+
+                        <li><a href="{{y.get_absolute_url}}">{{y.post_title}}</a> </li>
+                           
+                        {% endfor %}
+                        </ul>
+                    {% endfor %}
+                    </ul>
+                        
                     <h4>Archives By Category.</h4>
                     <ul>
                         

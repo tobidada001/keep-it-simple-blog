@@ -3,13 +3,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
-from .models import Categories, Tags, Post, Comments
+from .models import Categories, Post, Comments
 from django.db.models import Q
 from django.core.paginator import Paginator
 from .forms import ContactForm, NewPost
 from django.utils.text import slugify
 from django.views.generic import ListView
 from pprint import pprint as pp
+from taggit.models import Tag
 
 def loginuser(request):
    
@@ -46,9 +47,9 @@ def logoutuser(request):
 
 
 def index(request):
-    posts = Post.published.all()
+    posts = Post.published.all()[:5]
     categories = Categories.objects.all()
-    tags = Tags.objects.all()
+    tags = Tag.objects.all()[:10]
     
     return render(request, 'blog/index.html', {'posts': posts, 'categories': categories, 'tags': tags})
 
@@ -63,7 +64,7 @@ def archives(request):
 def blog(request):
     posts = Post.published.all().order_by('-post_date')
     categories = Categories.objects.all()
-    tags = Tags.objects.all()
+    tags = Tag.objects.all()
 
     page = Paginator(posts, 5)
     page_num = request.GET.get('page')
@@ -74,17 +75,15 @@ def blog(request):
 
 def single(request, year, month, day, pk):
     post = get_object_or_404(Post, post_date__year = year,  post_date__month = month, post_date__day=day, slug = pk)
-    
-    mytags = post.tags.all()
     post_comments = post.topic.filter(approval_status = True)
-    print(post_comments.values())
+    
     all_post_comments = post.topic.all()
     nocs = int(post_comments.count())
     for reply in post_comments:
         for r in reply.main_comment.all():
             nocs = nocs + 1
    
-    context = {'post': post, 'mytags': mytags, 'comments': post_comments, 'totalcomments': nocs, 'all_comments': all_post_comments }
+    context = {'post': post, 'comments': post_comments, 'totalcomments': nocs, 'all_comments': all_post_comments }
 
     return render(request, 'blog/single.html', context)
 
@@ -97,8 +96,9 @@ def postlist(request, pk):
 
 
 def tagposts(request, pk):
-    tag = get_object_or_404(Tags, tag_name = pk)
-    tagpost = tag.tags.all()
+    tag = get_object_or_404(Tag, slug = pk)
+    tagpost = Post.objects.filter(tagsagain__slug = tag.slug)
+    
     return render(request, 'blog/tagposts.html', {'tags': tagpost, 'tag': tag})
 
 
@@ -175,36 +175,29 @@ def newpost(request):
     newpost = NewPost(request.FILES)
     
     if request.method == 'POST':
-        print('My FILES: ', request.FILES)
+        
         newpost = NewPost(request.POST, request.FILES)
         try:
             if newpost.is_valid():
+                new = newpost.save(commit = False) 
                 post_title = newpost.cleaned_data.get('post_title')
-                post_body = newpost.cleaned_data.get('post_body')
-                cover = newpost.cleaned_data.get('cover')
-                category = newpost.cleaned_data.get('category')
-                tags = newpost.cleaned_data.get('tags')
                 slug = slugify(str(post_title))
+
                 if Post.objects.filter(slug = slug).exists():
                     messages.error(request, 'This post url slug already exists. Please make a few changes to your post title.')
                     return redirect (request.path)
 
-                new_post = Post(post_title = post_title, post_body = post_body,
-                category = category, author = request.user, cover = cover, slug = slug)
-                new_post.save()
-
-                for tag in tags:
-                    new_post.tags.add(tag)
-                
-                new_post.save()
+                new.slug = slug
+                new.author = request.user
+                print(new.slug)
                 if 'draft' in request.POST:
-                    new_post.status = False
-                    new_post.save()
+                    new.status = False
+                    print(new.status,' is the newly saved data.')
+                    newpost.save()
                     return redirect('/')
-                else:
-                    return redirect(new_post.get_absolute_url())
 
-                
+                newpost.save()
+                return redirect(newpost.get_absolute_url())
             else:
                 print('Data is not Valid')
         except BaseException:
@@ -233,7 +226,7 @@ def editpost(request, pk):
         raise Http404
     
     context = { 'post_title': post.post_title, 'post_body': post.post_body,  'author': post.author,
-        'category': post.category, 'tags': post.tags.all(),}
+        'category': post.category, 'tagsagain': post.tagsagain.all(),}
     
     newpost = NewPost(context, {'cover': post.cover}) 
     
@@ -252,8 +245,9 @@ def editpost(request, pk):
             else:
                 post.cover = post.cover
             post.category = newpost.cleaned_data['category']
-            post.tags.set(newpost.cleaned_data['tags'])
+            post.tagsagain.set(newpost.cleaned_data['tagsagain'])
             post.save()
+            # newpost.save_m2m()
             newpost = NewPost()
 
             return redirect(post.get_absolute_url())
@@ -273,3 +267,6 @@ def publish_post(request, pk):
     post.status = True
     post.save()
     return redirect('drafts')
+
+def error404(request, exception):
+    return render(request, 'blog/error404.html')

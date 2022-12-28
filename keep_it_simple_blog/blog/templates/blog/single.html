@@ -51,15 +51,27 @@
                     <p class="entry__tags">
                         <span>Tagged in </span>:
 
-                        {% for mt in mytags %}
-                        <a href="{% url 'tagposts' mt.tag_name %}">{{mt}}</a> , 
+                        {% for tag in post.tagsagain.all %}
+                        <a href="{% url 'tagposts' tag.slug %}">{{tag.name}}</a> , 
                         {% endfor %}
                            
                     </p>
+                    <style>
+                        .socialbtns{background: #eee !important;  padding: 0.8rem; margin: 0 0.8rem;}
+                        .socialbtns i{color: #aaa !important;}
+                        .share span{display: inline-flex; color: #aaa;}
+                    </style>
                     {% load social_share %}
-                    {% post_to_facebook object_or_url "<p style='color: blue;'><i class='fa fa-facebook'></i>Facebook</p> "%}
-                    {% post_to_linkedin object_or_url %}
-                    {% post_to_whatsapp object_or_url %}
+
+
+                   <div style="display: flex;" class="share"> 
+                    <span class="socialbtns fa fa-facebook-square">{% post_to_facebook post.get_absolute_url "<span style='color: #777'> Facebook</span>"%}</span>    
+                    <span class="socialbtns fa fa-telegram">{% post_to_telegram "Check out this article my friends" post.get_absolute_url "<span style='color: #777'> Telegram</span>"%}</span>
+                    <span class="socialbtns fa fa-whatsapp">{% post_to_whatsapp post.get_absolute_url "<span style='color: #777'> WhatsApp</span>"%}</span>
+                    <span class="socialbtns fa fa-reddit">{% post_to_reddit "Hi friends. Check out this article. You'll love it, I promise."  post.get_absolute_url "<span style='color: #777'> Reddit</span>"%}</span>
+                    <span class="socialbtns fa fa-twitter">{% post_to_twitter "Hey there! Here's another post to help you start your day." post.get_absolute_url "<span style='color: #777'> Twitter</span>" %}</span>
+                    
+                </div>
                     <ul class="entry__post-nav h-group">
                         
                     
@@ -80,13 +92,6 @@
                     </ul>
 
                 </article> <!-- end entry -->
-
-
-
-
-
-
-
 
 
 

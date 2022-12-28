@@ -39,10 +39,9 @@
         #userlbl{margin-left: 40rem;}
         @media screen and (max-width: 1020px){
             #userlbl{
-        margin-left: 5rem;
-        
+        margin-left: 5rem;  
     }
-}
+}   
     </style>
 
 </head>
@@ -68,8 +67,8 @@
                    
                    {% if request.user.is_superuser %}
               
-                    <a style="font-weight: bolder; color: #555; font-family: sans-serif;" href="{% url 'newpost' %}"> <i class="fa fa-plus fa-lg"></i>   Add Post </a>
-                    <a style="font-weight: bolder; color: #555; font-family: sans-serif;" href="{% url 'drafts' %}"> <i class="fa fa-list fa-lg"></i>   Drafts </a>
+                    <a style="font-weight: bolder; color: #555; font-family: sans-serif;" href="{% url 'newpost' %}"> <i class="fa fa-plus "></i>   Add Post </a> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a style="font-weight: bolder; color: #555; font-family: sans-serif;" href="{% url 'drafts' %}"> <i class="fa fa-list"></i>   Drafts </a>
                     <br>
                     <br>
                     {% endif %}
@@ -92,11 +91,11 @@
                 <ul class="s-header__nav">
                         
                     <li>
-                        <a href="{% url 'index' %}">Home</a>
+                        <a href="{% url 'index' %}" >Home</a>
                     </li>
                     
                     <li>
-                        <a href="{% url 'archives' %}">Archives</a>
+                        <a href="{% url 'archives'%}" >Archives</a>
                     </li>
 
                     
@@ -135,12 +134,7 @@
                            
                 
                     </li>
-
-                   
-
-                    
-                        
-                    
+ 
                 </ul>
                 
             </div>
@@ -171,10 +165,6 @@
                     
                     {% endfor %}
                     {% endfor %}
-                    
-                        
-                        
-                    
                 
                 </ul>
             </div>

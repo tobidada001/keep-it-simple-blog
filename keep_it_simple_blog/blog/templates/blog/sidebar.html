@@ -71,9 +71,9 @@
 
          <div class="tagcloud group">
              
-             {% for mtag in mytags %}
+             {% for tag in tags|slice:"10" %}
                  
-             <a href="{% url 'tagposts' mtag.tag_name %}">{{mtag.tag_name}}</a>
+             <a href="{% url 'tagposts' pk=tag.slug %}">{{tag.name}}</a>
              {% endfor %}
          </div>
      </div>
@@ -83,7 +83,7 @@
 
          <ul class="link-list">
              
-             {% for p in posts %}
+             {% for p in posts|slice:"10" %}
                  
              <li><a href="{{p.get_absolute_url}}">{{p.post_title}}</a></li>
 

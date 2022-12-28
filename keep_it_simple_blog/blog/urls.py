@@ -8,7 +8,7 @@ urlpatterns = [
     path('about', TemplateView.as_view(template_name = 'blog/about.html'), name = "about"),
     path('blog/<int:year>/<int:month>/<int:day>/<slug:pk>', views.single, name = "blog_single"),
     path('post-category/<str:pk>', views.postlist, name="postlist"),
-    path('tags/<str:pk>', views.tagposts, name="tagposts"),
+    path('tags/<slug:pk>', views.tagposts, name="tagposts"),
     path('search', views.search, name= "process_search"),
     path('login', views.loginuser, name="login"),
     path('post/edit/drafts', views.DraftListView.as_view(), name = 'drafts'),

@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'blog',
     'ckeditor',
     'ckeditor_uploader',
-    'django_social_share'
+    'django_social_share',
+    'taggit'
 ]
 
 MIDDLEWARE = [
@@ -77,12 +78,12 @@ WSGI_APPLICATION = 'keep_it_simple_blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR/'db.sqlite3',
-        # 'USER': 'root',
-        # 'PASSWORD': '',
-        # 'PORT': '3306',
-        # 'HOST': 'localhost',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tobidada$keepitsimpledb',
+        'USER': 'root',
+        'PASSWORD': '',
+        'PORT': '3306',
+        'HOST': 'localhost',
     }
 }
 
