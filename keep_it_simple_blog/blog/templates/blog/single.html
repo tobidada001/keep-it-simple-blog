@@ -1,340 +1,257 @@
-{% extends 'blog/base.html' %}
-{% load static %}
+{% extends 'blog/base.html' %} {% load static %}  {% block content %}
 
-{% block content %}
+<div class="s-content">
 
-    <div class="s-content">
-       
-        <div class="row">
-            
-            <div id="main" class="s-content__main large-8 column">
+    <div class="row">
 
-                
-                {% if request.user.is_superuser %}
-                    
-                <a href="{% url 'editpost' post.slug %}"> <i class="fa fa-pencil"></i> Edit</a> &nbsp; &nbsp; | &nbsp; &nbsp; <a href="{% url 'deletepost' post.slug %}"> <i class="fa fa-remove"></i> Delete</a><br><br>
-                
-                {% endif %}
-                <article class="entry">
+        <div id="main" class="s-content__main large-8 column">
 
-                    <header class="entry__header">
+            {% if request.user.is_superuser %}
 
-                        <h2 class="entry__title h1">
-                            <a href="{{post.get_absolute_url }}" title="">{{post.post_title}}</a>
-                        </h2>
+            <a href="{% url 'editpost' post.slug %}">
+                <i class="fa fa-pencil"></i> Edit</a> &nbsp; &nbsp; | &nbsp; &nbsp;
+            <a href="{% url 'deletepost' post.slug %}">
+                <i class="fa fa-remove"></i> Delete</a>
+            <br> {% endif %}
 
-                        <div class="entry__meta">
-                            <ul>
-                                <li>{{post.post_date.date}}</li>
-                                <li><a href="{% url 'postlist' post.category %}" title="" rel="category tag">{{post.category}}</a></li>
-                                <li>{{post.author}}</li>
-                            </ul>
-                        </div>
-                     
-                    </header> <!-- entry__header -->
+            <article class="entry">
 
-                    <div class="entry__content-media">
-                        
-                        {% if post.cover %}
-                        <img src="{{post.cover.url}}" sizes="(max-width: 1000px) 100vw, 1000px" alt="">
-                        {% endif %}
-                            
-                        
+                <header class="entry__header">
+
+                    <h2 class="entry__title h1">
+                        <a href="{{post.get_absolute_url }}" title="">{{post.post_title}}</a>
+                    </h2>
+
+                    <div class="entry__meta">
+                        <ul>
+                            <li>{{post.post_date.date}}</li>
+                            <li>
+                                <a href="{% url 'postlist' post.category %}" title="" rel="category tag">{{post.category}}</a>
+                            </li>
+                            <li>{{post.author}}</li>
+                        </ul>
                     </div>
 
-                    <div class="entry__content">
-                        <p class="lead" style="font-size: 1.6rem;">
-                        {{post.post_body|safe|linebreaks}}
-                        </p>
-                    </div> <!-- entry__content -->
+                </header>
+                <!-- entry__header -->
 
-                    <p class="entry__tags">
-                        <span>Tagged in </span>:
+                <div class="entry__content-media">
 
-                        {% for tag in post.tagsagain.all %}
-                        <a href="{% url 'tagposts' tag.slug %}">{{tag.name}}</a> , 
-                        {% endfor %}
-                           
-                    </p>
-                    <style>
-                        .socialbtns{background: #eee !important;  padding: 0.8rem; margin: 0 0.8rem;}
-                        .socialbtns i{color: #aaa !important;}
-                        .share span{display: inline-flex; color: #aaa;}
-                    </style>
-                    {% load social_share %}
+                    {% if post.cover %}
+                    <img src="{{post.cover.url}}" sizes="(max-width: 1000px) 100vw, 1000px" alt=""> {% endif %}
 
-
-                   <div style="display: flex;" class="share"> 
-                    <span class="socialbtns fa fa-facebook-square">{% post_to_facebook post.get_absolute_url "<span style='color: #777'> Facebook</span>"%}</span>    
-                    <span class="socialbtns fa fa-telegram">{% post_to_telegram "Check out this article my friends" post.get_absolute_url "<span style='color: #777'> Telegram</span>"%}</span>
-                    <span class="socialbtns fa fa-whatsapp">{% post_to_whatsapp post.get_absolute_url "<span style='color: #777'> WhatsApp</span>"%}</span>
-                    <span class="socialbtns fa fa-reddit">{% post_to_reddit "Hi friends. Check out this article. You'll love it, I promise."  post.get_absolute_url "<span style='color: #777'> Reddit</span>"%}</span>
-                    <span class="socialbtns fa fa-twitter">{% post_to_twitter "Hey there! Here's another post to help you start your day." post.get_absolute_url "<span style='color: #777'> Twitter</span>" %}</span>
-                    
                 </div>
-                    <ul class="entry__post-nav h-group">
-                        
-                    
-                        {% if post.get_previous_by_post_date %}
-                        
-                           
-                        <li class="prev"><a rel="prev" href="{{post.get_previous_by_post_date.get_absolute_url }}"><strong class="h6">Previous Article</strong>{{post.get_previous_by_post_date.post_title}}</a></li>
-                        
-   
-                        {% endif %}
-                        
-                        {% if post.get_next_by_post_date %}
-                    
-                        <li class="next"><a rel="next" href= "{{post.get_next_by_post_date.get_absolute_url }}"><strong class="h6">Next Article</strong> {{post.get_next_by_post_date.post_title}}</a></li>
-                        
-                        {% endif %}
 
-                    </ul>
+                <div class="entry__content">
+                    <p class="lead" style="font-size: 1.6rem;">
+                        {{post.post_body|safe|linebreaks}}
+                    </p>
+                </div>
+                <!-- entry__content -->
 
-                </article> <!-- end entry -->
+                <p class="entry__tags">
+                    <span>Tagged in </span>: {% for tag in post.tagsagain.all %}
+                    <a href="{% url 'tagposts' tag.slug %}">{{tag.name}}</a> , {% endfor %}
+
+                </p>
+                <style>
+                    .socialbtns {
+                        background: #eee !important;
+                        padding: 0.8rem;
+                        margin: 0 0.8rem;
+                    }
+
+                    .socialbtns i {
+                        color: #aaa !important;
+                    }
+
+                    .share div {
+                        display: inline-flex;
+                        color: #aaa;
+                    }
+                    @media screen and (max-width : 240px){
+                        .share{display: grid; grid-gap: 1rem;}
+                    }
+                </style>
 
 
+                
+                <div style=""  class="share">
+                        {% load social_share %}
+                    <div class="socialbtns fa fa-facebook-square">{% post_to_facebook post.get_absolute_url "<span style='color: #777'> Facebook</span>"%}</div>
+                    <div class="socialbtns fa fa-telegram">{% post_to_telegram "Check out this article my friends" post.get_absolute_url "<span style='color: #777'>Telegram</span>"%}</div>
+                    <div class="socialbtns fa fa-whatsapp">{% post_to_whatsapp post.get_absolute_url "<span style='color: #777'> WhatsApp</span>"%}</div>
+                    <div class="socialbtns fa fa-reddit">{% post_to_reddit "Hi friends. Check out this article. You'll love it, I promise." post.get_absolute_url "<span style='color: #777'> Reddit</span>"%}</div>
+                    <div class="socialbtns fa fa-twitter">{% post_to_twitter "Hey there! Here's another post to help you start your day." post.get_absolute_url "<span style='color: #777'> Twitter</span>" %}</div>
+
+                </div>
+                <ul class="entry__post-nav h-group">
 
 
-
-                <div class="comments-wrap">
-
-                    <div id="comments">
-
-                        <h3>{{totalcomments}} Comments</h3>
-        
-                        <!-- START commentlist -->
-                        <ol class="commentlist">
-                            
-                            
-                            {% if all_comments %}
-                                {% for comment in all_comments %}
-                                  {% if comment.approval_status == True and not request.user.is_superuser %}
-                                        
-                                        <li class="thread-alt depth-1 comment">
-        
-                             
-                                                <ul class="children">
-                        
-                                                    <li class="depth-2 comment">
-                        
-                                                        <div class="comment__avatar">
-                                                            <img class="avatar" src="{% static 'images/avatars/user-03.jpg' %}" alt="" width="50" height="50">
-                                                        </div>
-                        
-                                                        <div class="comment__content">
-                        
-                                                            <div class="comment__info">
-                                                                <div class="comment__author">{{comment.name}}</div>
-                        
-                                                                <div class="comment__meta">
-                                                                    <div class="comment__time">{{comment.date_added}}</div>
-                                                                    <div class="comment__reply">
-                                                                        <a class="comment-reply-link" href="#0">Reply</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                        
-                                                            <div class="comment__text">
-                                                                <p>{{comment.comment}}</p> 
-                                                               
-                                                            </div>
-                        
-                                                        </div>
-                                                        
-                                                            {% if comment.main_comment %}
-                                                
-                                                            {% for reply in comment.main_comment.all %}
-                                                            <ul class="children">
-                        
-                                                                    <li class="depth-3 comment">
-                                
-                                                                        <div class="comment__avatar">
-                                                                            <img class="avatar" src="{% static 'images/avatars/user-04.jpg' %}" alt="" width="50" height="50">
-                                                                        </div>
-                                
-                                                                        <div class="comment__content">
-                                
-                                                                            <div class="comment__info">
-                                                                                <div class="comment__author">{{reply.name}}</div>
-                                
-                                                                                <div class="comment__meta">
-                                                                                    <div class="comment__time">{{reply.date_added}}</div>
-                                                                                    <div class="comment__reply">
-                                                                                        <a class="comment-reply-link" href="#0">Reply</a>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                
-                                                                            <div class="comment__text">
-                                                                            <p>{{reply.reply}}</p>
-                                                                            </div>
-                                
-                                                                        </div>
-                                
-                                                                    </li>
-                                
-                                                                </ul>
-                                                            {% endfor %}
-                                                                
-                                                        {% endif %}
-                                                        
-                        
-                                                    </li>
-                        
-                                                </ul>
-                        
-                                            </li> 
-                                              
-                                        
-                                  {% elif request.user.is_superuser %}
-                                    
-                                    
-                                    <li class="thread-alt depth-1 comment">
-        
-                             
-                                            <ul class="children">
-                    
-                                                <li class="depth-2 comment">
-                    
-                                                    <div class="comment__avatar">
-                                                        <img class="avatar" src="{% static 'images/avatars/user-03.jpg' %}" alt="" width="50" height="50">
-                                                    </div>
-                    
-                                                    <div class="comment__content">
-                    
-                                                        <div class="comment__info">
-                                                            <div class="comment__author">{{comment.name}}</div>
-                    
-                                                            <div class="comment__meta">
-                                                                <div class="comment__time">{{comment.date_added}}</div>
-                                                                <div class="comment__reply">
-                                                                    <a class="comment-reply-link" href="#0">Reply</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                    
-                                                        <div class="comment__text">
-                                                            <p>{{comment.comment}}</p>
-                                                            
-                                                            
-                                                            {% if comment.approval_status == True %}
-            
-                                                            <a href="{% url 'delete_comment' comment.id%}" style="color: red;">Delete</a>
-                                                            {% else %}
-                                                    
-                                                            <a href="{% url 'approve_comment' comment.id %}">Approve</a> | <a style="color: red;" href="{% url 'delete_comment' comment.id%}">Delete</a> 
-                                                            {% endif %}
-                                                        </div>
-                    
-                                                    </div>
-                                                    
-                                                    {% if comment.main_comment %}
-                                                        
-                                                        
-                                                        {% for reply in comment.main_comment.all %}
-                                                            
-                                                        <ul class="children">
-                    
-                                                            <li class="depth-3 comment">
-                        
-                                                                <div class="comment__avatar">
-                                                                    <img class="avatar" src="{% static 'images/avatars/user-04.jpg' %}" alt="" width="50" height="50">
-                                                                </div>
-                        
-                                                                <div class="comment__content">
-                        
-                                                                    <div class="comment__info">
-                                                                        <div class="comment__author">{{reply.name}}</div>
-                        
-                                                                        <div class="comment__meta">
-                                                                            <div class="comment__time">{{reply.date_added}}</div>
-                                                                            <div class="comment__reply">
-                                                                                <a class="comment-reply-link" href="#0">Reply</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                        
-                                                                    <div class="comment__text">
-                                                                    <p>{{reply.reply}}</p>
-                                                                    </div>
-                        
-                                                                </div>
-                        
-                                                            </li>
-                        
-                                                        </ul>
-            
-                                                        {% endfor %}
-                                                            
-            
-                                                    {% endif %}
-                                                        
-                                                    
-                    
-                                                </li>
-                    
-                                            </ul>
-                    
-                                        </li> 
-                                    {% endif %}
-                                    
-                                  {% endfor %}
-                            
-                            {% else %}
-
-                             <p class="s-header__tagline">Be the first to comment.</p>
-
-                            
-                            {% endif %}
-                                
-                            <!-- end comment level 1 -->
-        <!-- end comment level 1 -->        
-        
-                        </ol>
-                        <!-- END commentlist -->
-
-                    </div> <!-- end comments -->
-                    {% if request.user.is_authenticated %}
-                    <div class="comment-respond">
-                        {{request.session.pending}}
-                        <!-- START respond -->
-                        <div id="respond">
-                                
-                            <h3>Add Comment <span>Your email address will not be published</span></h3>
-            
-                            <form name="contactForm" id="contactForm" method="POST" action="{% url 'addcomment' post.id post.slug %}" autocomplete="off">
-                                {% csrf_token %}
-                                <fieldset>
-            
-                                    <div class="message form-field">
-                                        <textarea name="cMessage" id="cMessage" class="h-full-width" placeholder="Your Message"></textarea>
-                                    </div>
-                                    
-                                   
-                                    <input name="submit" id="submit" class="btn btn--primary btn-wide btn--large h-full-width" value="Add Comment" type="submit">
-            
-                                </fieldset>
-                            </form> <!-- end form -->
-                            
-                        </div>
-                        <!-- END respond-->
-                       
-                    </div> <!-- end comment-respond -->
-                    {% else %}
-                    <p style="margin-top: -30px; margin-bottom: 30px;" class="s-header__tagline">Login to write a comment.</p>
-
+                    {% if post.get_previous_by_post_date %}
+                    <li class="prev">
+                        <a rel="prev" href="{{post.get_previous_by_post_date.get_absolute_url }}">
+                            <strong class="h6">Previous Article</strong>{{post.get_previous_by_post_date.post_title}}</a>
+                    </li>
+                    {% endif %} {% if post.get_next_by_post_date %}
+                    <li class="next">
+                        <a rel="next" href="{{post.get_next_by_post_date.get_absolute_url }}">
+                            <strong class="h6">Next Article</strong> {{post.get_next_by_post_date.post_title}}</a>
+                    </li>
                     {% endif %}
-                </div> <!-- end comments-wrap -->
 
-            </div> <!-- end main -->
+                </ul>
+
+            </article>
+            <!-- end entry -->
 
 
-            {% include "blog/sidebar.html" %} <!-- end sidebar -->
+            <div class="comments-wrap">
 
-        </div> <!-- end row -->
+                <div id="comments">
 
-    </div> <!-- end content-wrap -->
-        
-    {% endblock content %}
-        
+                    <h3>{{totalcomments}} Comments</h3>
+
+                    <!-- START commentlist -->
+                    <ol class="commentlist">
+
+                        {% if comments %} {% for comment in comments %}
+
+                        <li class="thread-alt depth-1 comment">
+
+
+                            <ul class="children">
+
+                                <li class="depth-2 comment">
+
+                                    <div class="comment__avatar">
+                                        <img class="avatar" src="{% static 'images/avatars/user-03.jpg' %}" alt="" width="50" height="50">
+                                    </div>
+
+                                    <div class="comment__content">
+
+                                        <div class="comment__info">
+                                            <div class="comment__author">{{comment.name}}</div>
+
+                                            <div class="comment__meta">
+                                                <div class="comment__time">{{comment.date_added}}</div>
+                                                <div class="comment__reply">
+                                                    <a class="comment-reply-link" href="#0">Reply</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="comment__text">
+                                            <p>{{comment.comment}}</p>
+
+                                            {% if request.user.is_superuser %} {% if comment.approval_status == False %}
+                                            <a href="{% url 'approve_comment' comment.id %}">Approve</a> &nbsp;&nbsp; | &nbsp;&nbsp; {% endif %}
+
+                                            <a href="{% url 'delete_comment' comment.id %}" style="color: #f00;">Delete</a>
+                                            {% endif %}
+
+
+                                        </div>
+
+                                    </div>
+
+                                    {% if comment.main_comment %} {% for reply in comment.main_comment.all %}
+                                    <ul class="children">
+
+                                        <li class="depth-3 comment">
+
+                                            <div class="comment__avatar">
+                                                <img class="avatar" src="{% static 'images/avatars/user-04.jpg' %}" alt="" width="50" height="50">
+                                            </div>
+
+                                            <div class="comment__content">
+
+                                                <div class="comment__info">
+                                                    <div class="comment__author">{{reply.name}}</div>
+
+                                                    <div class="comment__meta">
+                                                        <div class="comment__time">{{reply.date_added}}</div>
+                                                        <div class="comment__reply">
+                                                            <a class="comment-reply-link" href="#0">Reply</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="comment__text">
+                                                    <p>{{reply.reply}}</p>
+                                                </div>
+
+                                            </div>
+
+                                        </li>
+
+                                    </ul>
+                                    {% endfor %} {% endif %}
+
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                        {% endfor %} {% else %}
+
+                        <p class="s-header__tagline">Be the first to comment.</p>
+
+                        {% endif %}
+
+                    </ol>
+                   
+                </div>
+                <!-- end comments -->
+                {% if request.user.is_authenticated %}
+                <div class="comment-respond">
+                    <b>{{request.session.pending}}</b>
+                    <!-- START respond -->
+                    <div id="respond">
+
+                        <h3>Add Comment
+                            <span>Your email address will not be published</span>
+                        </h3>
+
+                        <form name="contactForm" id="contactForm" method="POST" action="{% url 'addcomment' post.id post.slug %}" autocomplete="off">
+                            {% csrf_token %}
+                            <fieldset>
+
+                                <div class="message form-field">
+                                    <textarea name="cMessage" id="cMessage" class="h-full-width" placeholder="Your Message"></textarea>
+                                </div>
+
+
+                                <input name="submit" id="submit" class="btn btn--primary btn-wide btn--large h-full-width" value="Add Comment" type="submit">
+
+                            </fieldset>
+                        </form>
+                        <!-- end form -->
+
+                    </div>
+                    <!-- END respond-->
+
+                </div>
+                <!-- end comment-respond -->
+                {% else %}
+                <p style="margin-top: -30px; margin-bottom: 30px;" class="s-header__tagline">Login to write a comment.</p>
+
+                {% endif %}
+            </div>
+            <!-- end comments-wrap -->
+
+        </div>
+        <!-- end main -->
+
+
+        {% include "blog/sidebar.html" %}
+        <!-- end sidebar -->
+
+    </div>
+    <!-- end row -->
+
+</div>
+<!-- end content-wrap -->
+
+{% endblock content %}

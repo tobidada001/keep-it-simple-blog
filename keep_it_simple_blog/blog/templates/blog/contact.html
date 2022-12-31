@@ -3,8 +3,6 @@
 
 {% block content %}
 
-
-
     <div style="background: white; ">
         
         {% if messages %}
@@ -18,8 +16,6 @@
             {% endfor %}
         {% endif %}
             
-
-            
                 <br>
         <form action="" method="POST" style="margin-right: 10%; margin-left: 10%; background: white;">
             {% csrf_token %}
@@ -30,5 +26,4 @@
 
     </div>
 
-   
 {% endblock%}

@@ -59,11 +59,7 @@
      <div class="widget widget_text group">
          <h3 class="h6">Widget Text.</h3>
 
-         <p>
-         Lorem ipsum Ullamco commodo laboris sit dolore commodo aliquip incididunt fugiat esse dolor 
-         aute fugiat minim eiusmod do velit labore fugiat officia ad sit culpa labore in consectetur 
-         sint cillum sint consectetur voluptate adipisicing Duis irure magna ut sit amet reprehenderit.
-         </p>
+         <p>{%lorem 20 w%} </p>
      </div>
 
      <div class="widget widget_tags">
@@ -72,25 +68,22 @@
          <div class="tagcloud group">
              
              {% for tag in tags|slice:"10" %}
-                 
              <a href="{% url 'tagposts' pk=tag.slug %}">{{tag.name}}</a>
              {% endfor %}
          </div>
      </div>
 
+     {% if recommended %}
+    
      <div class="widget widget_popular">
-         <h3 class="h6">Popular Post.</h3>
+         <h3 class="h6">Recommended Post.</h3>
 
          <ul class="link-list">
-             
-             {% for p in posts|slice:"10" %}
-                 
-             <li><a href="{{p.get_absolute_url}}">{{p.post_title}}</a></li>
-
-             {% endfor %}
-                 
+            
+              <li><a href="{{recommended.get_absolute_url}}">{{recommended.post_title}}</a></li>
+            
          </ul>
      </div>
-    
+     {% endif %}
 </div>
 </body>

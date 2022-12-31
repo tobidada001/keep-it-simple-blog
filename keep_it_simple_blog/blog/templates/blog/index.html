@@ -12,14 +12,14 @@
             <div id="main" class="s-content__main large-8 column">
                 {% if posts %}
               
-                    <h1 style="margin-left: 0rem; margin-top: 0;" class="entry__title h1">Latest Posts</h1><br>
+                    <h3 style="margin-left: 0rem; margin-top: 0;" class="entry__title h3">Latest Posts</h3><br>
                 {% for post in posts reversed%}
                     
                 <article class="entry">
 
                     <header class="entry__header">
 
-                        <h2 class="entry__title h1">
+                        <h2 class="entry__title h2">
                             <a href="{{post.get_absolute_url}}" title="">{{post.post_title}}</a>
                         </h2>
 

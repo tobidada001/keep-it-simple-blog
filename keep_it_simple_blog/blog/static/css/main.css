@@ -1408,8 +1408,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
     background-repeat: no-repeat;
     background-position: right top;
     min-height: 30rem;
-    padding-top: 12rem;
-    padding-bottom: 8rem;
+    padding-top: 8rem !important;
+    padding-bottom: 2rem !important;
     border-bottom: 1px dashed #efefef;
     position: relative;
 }
@@ -1699,8 +1699,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 
 @media screen and (max-width:800px) {
     .s-header__content {
-        padding-top: 9.6rem;
-        padding-bottom: 12rem;
+        padding-top: 6.6rem;
+        padding-bottom: 1rem;
         min-height: 0;
         background-size: 310px 220px;
     }

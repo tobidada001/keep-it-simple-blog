@@ -75,10 +75,17 @@ def blog(request):
 
 def single(request, year, month, day, pk):
     post = get_object_or_404(Post, post_date__year = year,  post_date__month = month, post_date__day=day, slug = pk)
-    post_comments = post.topic.filter(approval_status = True)
-    
+    post_comments = None
+    nocs = 0
+    if request.user.is_superuser:
+        post_comments = post.topic.all()
+        nocs = int(post_comments.count())
+    else:
+        post_comments = post.topic.filter(approval_status = True)
+        nocs = int(post_comments.count())
+        print('NOCS: ', nocs)
     all_post_comments = post.topic.all()
-    nocs = int(post_comments.count())
+    
     for reply in post_comments:
         for r in reply.main_comment.all():
             nocs = nocs + 1
