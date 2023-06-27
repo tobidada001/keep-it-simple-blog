@@ -26,14 +26,13 @@ def loginuser(request):
             else:
                 return redirect('login')
         else:
-            a = User.objects.create_user(username = username, password = password)
-            a.save()
-            user = auth.authenticate(username=username, password = password)
+            if username and password:
+                a = User.objects.create_user(username = username, password = password)
+                a.save()
+                user = auth.authenticate(username=username, password = password)
             
-            if user is not None:
-                login(request, user)
-
-                if user.is_authenticated:
+                if user is not None:
+                    login(request, user)
                     return redirect('/')
             else:
                 return redirect('login')
@@ -83,7 +82,7 @@ def single(request, year, month, day, pk):
     else:
         post_comments = post.topic.filter(approval_status = True)
         nocs = int(post_comments.count())
-        print('NOCS: ', nocs)
+
     all_post_comments = post.topic.all()
     
     for reply in post_comments:
@@ -129,7 +128,6 @@ def approve_comment(request, id):
 
 def addcomment(request, id, pk):
     post = get_object_or_404(Post, id= id, slug = pk)
-    print(post)
 
     if request.method == 'POST':
         comment = request.POST.get('cMessage')
@@ -167,9 +165,7 @@ def contact(request):
             messages.info(request, 'Thank you for the feedback! Your message has been successfully sent!')
             return redirect('contact')
         else:
-            print('Form is not valid')
             for msg in myform.error_messages:
-
                 messages.info(request,'Ooops! An error occured! Please try again later.')
     else:
         myform = ContactForm()
@@ -196,17 +192,16 @@ def newpost(request):
 
                 new.slug = slug
                 new.author = request.user
-                print(new.slug)
+                
                 if 'draft' in request.POST:
                     new.status = False
-                    print(new.status,' is the newly saved data.')
                     newpost.save()
                     return redirect('/')
 
                 newpost.save()
                 return redirect(newpost.get_absolute_url())
             else:
-                print('Data is not Valid')
+                pass
         except BaseException:
             return redirect('/')
     else:
@@ -259,7 +254,7 @@ def editpost(request, pk):
 
             return redirect(post.get_absolute_url())
         else:
-            print('Data is not Valid')
+            pass
 
     return render(request, 'blog/editpost.html', {'newpostform': newpost, 'post': post})
 

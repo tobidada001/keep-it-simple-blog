@@ -8,10 +8,10 @@ LOGIN_REDIRECT_URL = '/blog_single'
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-mjys4@#ss0m2mcwp!kq5(8$@m8a*l*zp)o+)ig(cuz^3qhprdt'
+SECRET_KEY = os.environ.get('SECRET_KEY', '123456890')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -26,14 +26,17 @@ CKEDITOR_CONFIGS = {
 }
 
 # Application definition
+SITE_ID = 1
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'django.contrib.admin', 
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'blog',
     'ckeditor',
     'ckeditor_uploader',
@@ -76,6 +79,21 @@ WSGI_APPLICATION = 'keep_it_simple_blog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+## Remote database settings
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tobidada$keepitsimple',
+        'USER': 'tobidada',
+        'PASSWORD': 'keepitsimple1000',
+        'PORT': '3306',
+        'HOST': 'tobidada.mysql.pythonanywhere-services.com',
+    }
+}
+
+'''
+#Local Database Setting.
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -86,6 +104,7 @@ DATABASES = {
         'HOST': 'localhost',
     }
 }
+'''
 
 
 # Password validation
@@ -124,7 +143,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR/'blog/static']
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

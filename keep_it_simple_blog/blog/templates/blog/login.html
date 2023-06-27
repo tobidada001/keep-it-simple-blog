@@ -6,17 +6,17 @@
     
 <form style="justify-content: center;" action="" method="POST">
     {% csrf_token %}
-
-     <input style="margin-left: 30rem" name="username" type="text" placeholder="Username" class="text-search">
-     <input name="password" style="margin-left: 30rem;" type="password" placeholder="Password" class="text-search">
+    <div style="width: 30%; margin: 4em auto; line-height: 3em;" >
+     <input name="username" style="width: 100%" type="text" placeholder="Username" class="text-search">
+     <input name="password" style="width: 100%" type="password" placeholder="Password" class="text-search">
 
      {% if request.GET.next %}                
      <input type="hidden" name="next" value="{{request.GET.next}}"/>
      {% endif %}
 
-    <input type="submit" style="margin-left: 30rem;" value="Login">
+    <input type="submit" style="float: right; margin-right: 2em;" value="Login">
     
-
+    </div>
 </form>
 
 {% endblock content %}
