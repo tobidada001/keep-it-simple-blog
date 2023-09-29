@@ -118,7 +118,7 @@
                     </li>
                     
                    
-                    <li  id="userlbl">
+                    <li  id="userlbl" >
                        
                         {% if user.is_authenticated%}
                             
@@ -126,7 +126,7 @@
                                 <a href="{% url 'logout' %}" ><span>Logout Admin ({{user}})</span> </a>
                             {% else %}
                                 
-                                <a href="{% url 'logout' %}" ><span>Logout {{user}}</span> </a>
+                                <a href="{% url 'logout' %}"  ><span>Logout {{user}}</span> </a>
                             {% endif %}
                         {% else %}
                            <a href="{% url 'login' %}">Login</a>
@@ -136,6 +136,10 @@
                     </li>
  
                 </ul>
+
+                <style>
+                    
+                </style>
                 
             </div>
 
@@ -146,6 +150,7 @@
             <span>Menu</span>
         </a>
 
+        
     </header>
     <!-- Header End -->
 
@@ -155,7 +160,7 @@
 
         <div class="row s-footer__top">
             <div class="column">
-                <ul class="s-footer__social" style="display: inline-flex;">
+                <ul class="s-footer__social" style="display: flex; justify-content: center; ">
                     
                     {% for links in social_links %}
                         

@@ -9,6 +9,7 @@
         <div class="row">
 
             <div id="main" class="s-content__main large-8 column">
+                {% if request.GET.searchbox %}<strong style="font-size: 2em;"># {{request.GET.searchbox }} </strong>{% endif %}
                 
                 {% if posts %}
               

@@ -11,7 +11,7 @@ LOGIN_REDIRECT_URL = '/blog_single'
 SECRET_KEY = os.environ.get('SECRET_KEY', '123456890')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -80,18 +80,18 @@ WSGI_APPLICATION = 'keep_it_simple_blog.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 ## Remote database settings
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tobidada$keepitsimple',
-        'USER': 'tobidada',
-        'PASSWORD': 'keepitsimple1000',
-        'PORT': '3306',
-        'HOST': 'tobidada.mysql.pythonanywhere-services.com',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'tobidada$keepitsimple',
+#         'USER': 'tobidada',
+#         'PASSWORD': 'keepitsimple1000',
+#         'PORT': '3306',
+#         'HOST': 'tobidada.mysql.pythonanywhere-services.com',
+#     }
+# }
 
-'''
+
 #Local Database Setting.
 
 DATABASES = {
@@ -104,7 +104,7 @@ DATABASES = {
         'HOST': 'localhost',
     }
 }
-'''
+
 
 
 # Password validation

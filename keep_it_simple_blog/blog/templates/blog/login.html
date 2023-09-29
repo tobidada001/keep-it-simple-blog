@@ -1,22 +1,61 @@
-{% extends "blog/base.html" %}
+{% extends "blog/base.html" %} {% block content %}
 
-{% block content %}
-    
+<form id="loginform" action="" method="POST">
+  {% csrf_token %}
+  
 
-    
-<form style="justify-content: center;" action="" method="POST">
-    {% csrf_token %}
-    <div style="width: 30%; margin: 4em auto; line-height: 3em;" >
-     <input name="username" style="width: 100%" type="text" placeholder="Username" class="text-search">
-     <input name="password" style="width: 100%" type="password" placeholder="Password" class="text-search">
+  
+  <div id="loginformdiv">
+    <h3> Enter details to signup or login.</h3>
+  
+    <input name="username" type="text" placeholder="Username" class="text-search login-field" />
+    <input name="password" type="password" placeholder="Password" class="text-search login-field"  />
 
-     {% if request.GET.next %}                
-     <input type="hidden" name="next" value="{{request.GET.next}}"/>
-     {% endif %}
+    {% if request.GET.next %}
+    <input type="hidden" name="next" value="{{request.GET.next}}" />
+    {% endif %}
 
-    <input type="submit" style="float: right; margin-right: 2em;" value="Login">
-    
-    </div>
+    <input type="submit" id="loginsubmitbtn" value="Login" />
+
+  </div>
+
+
 </form>
+
+<style>
+  .loginform h3{
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  #loginform {
+    justify-content: center;
+    width: 90%;
+    margin: auto;
+    
+  }
+
+  #loginformdiv{
+    width: 100%;
+    margin: 0 auto 4em auto;
+    line-height: 3em;
+    
+  }
+
+  .login-field {
+    width: 100%;
+    background-color: #fff !important;
+  }
+  #loginsubmitbtn {
+    float: right;
+    margin-right: 0;
+    padding: 0 1.5rem;
+  }
+
+  @media screen and (min-width: 701px) {
+    #loginformdiv{
+        width: 60%;
+    }
+  }
+</style>
 
 {% endblock content %}
