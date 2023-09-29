@@ -80,30 +80,30 @@ WSGI_APPLICATION = 'keep_it_simple_blog.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 ## Remote database settings
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'tobidada$keepitsimple',
-#         'USER': 'tobidada',
-#         'PASSWORD': 'keepitsimple1000',
-#         'PORT': '3306',
-#         'HOST': 'tobidada.mysql.pythonanywhere-services.com',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tobidada$keepitsimple',
+        'USER': 'tobidada',
+        'PASSWORD': 'keepitsimple1000',
+        'PORT': '3306',
+        'HOST': 'tobidada.mysql.pythonanywhere-services.com',
+    }
+}
 
 
 #Local Database Setting.
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tobidada$keepitsimpledb',
-        'USER': 'root',
-        'PASSWORD': '',
-        'PORT': '3306',
-        'HOST': 'localhost',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'tobidada$keepitsimpledb',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'PORT': '3306',
+#         'HOST': 'localhost',
+#     }
+# }
 
 
 
