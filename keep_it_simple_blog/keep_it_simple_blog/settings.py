@@ -11,7 +11,7 @@ LOGIN_REDIRECT_URL = '/blog_single'
 SECRET_KEY = os.environ.get('SECRET_KEY', '123456890')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
